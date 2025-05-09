@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDownIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { NavLink, useLocation } from 'react-router-dom';
 
 const navLinks = [
   {
@@ -54,15 +55,38 @@ function useOnClickOutside(ref: any, handler: () => void) {
   }, [ref, handler]);
 }
 
-const DropdownMenu = ({ label, children }: { label: string; children: React.ReactNode }) => {
+const DropdownMenu = ({ label, children, active }: { label: string; children: React.ReactNode; active?: boolean }) => {
   const [open, setOpen] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Keyboard accessibility
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (open && (e.key === 'Escape' || e.key === 'Esc')) {
+        setOpen(false);
+        buttonRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open]);
+
+  // Dismiss on scroll
+  useEffect(() => {
+    if (!open) return;
+    const onScroll = () => setOpen(false);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [open]);
+
   useOnClickOutside(ref, () => setOpen(false));
 
   return (
     <div className="relative" ref={ref} onMouseLeave={() => setOpen(false)}>
       <button
-        className="flex items-center gap-1 px-4 py-2 text-white hover:text-cyan-400 font-bold transition-colors focus:outline-none"
+        ref={buttonRef}
+        className={`flex items-center gap-1 px-4 py-2 font-bold transition-colors focus:outline-none rounded-xl ${active ? 'text-[#009FE3] border-b-2 border-[#009FE3] bg-[#009fe30a]' : 'text-[#10163a] hover:text-[#009FE3]'} `}
         onMouseEnter={() => setOpen(true)}
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="true"
@@ -71,18 +95,28 @@ const DropdownMenu = ({ label, children }: { label: string; children: React.Reac
         type="button"
       >
         {label}
-        <ChevronDownIcon className="w-4 h-4" />
+        <ChevronDownIcon className={`w-4 h-4 transition-transform ${open ? 'rotate-180 text-[#009FE3]' : ''}`} />
       </button>
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.18 }}
-            className="absolute left-0 mt-3 min-w-[220px] rounded-xl shadow-2xl bg-[#10163a] border border-[#1e2746] py-2 z-50"
+            exit={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.22 }}
+            className="absolute left-0 mt-3 min-w-[220px] rounded-xl shadow-2xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 py-2 z-50 backdrop-blur-md"
+            style={{ backdropFilter: 'blur(12px)' }}
           >
-            {children}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.06 } },
+              }}
+            >
+              {children}
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -92,15 +126,18 @@ const DropdownMenu = ({ label, children }: { label: string; children: React.Reac
 
 // Logo component
 const NexverseLogo = () => (
-  <span className="flex items-center gap-2">
-    <img src="/assets/images/logo.png" alt="Nexverse Logo" className="h-10 w-10 rounded-xl bg-white object-contain shadow" />
-    <span className="font-serif text-2xl md:text-3xl font-semibold text-primary select-none tracking-tight">Nexverse</span>
-  </span>
+  <img
+    src="/assets/images/logo.png"
+    alt="Nexverse Consulting Group LTD"
+    className="h-16 md:h-16 w-auto"
+    style={{ maxHeight: '56px' }}
+  />
 );
 
 const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -108,38 +145,53 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Helper to check if a nav group is active
+  const isGroupActive = (children: { href: string }[]) =>
+    children.some((child) => location.pathname.startsWith(child.href));
+
   return (
-    <nav
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? 'shadow-xl' : ''} bg-primary`}
-      aria-label="Main navigation"
-    >
-      <div className="flex items-center justify-between px-8 py-4">
+    <nav className="sticky top-0 z-50 w-full bg-white shadow-sm">
+      <div className="flex items-center justify-between px-10 py-3">
         {/* Logo */}
-        <a href="./public/assets/images/logo.png" className="flex items-center gap-2" aria-label="Nexverse Home">
+        <NavLink to="/" className="flex items-center" aria-label="Nexverse Home">
           <NexverseLogo />
-        </a>
-        {/* Desktop Nav */}
-        <div className="hidden lg:flex items-center gap-8">
+        </NavLink>
+        {/* Nav Links */}
+        <div className="hidden lg:flex items-center gap-10">
           {navLinks.map((item) => (
-            <DropdownMenu label={item.label} key={item.label}>
-              {item.children.map((child) => (
-                <a
+            <DropdownMenu label={item.label} key={item.label} active={isGroupActive(item.children)}>
+              {item.children.map((child, idx) => (
+                <motion.div
                   key={child.label}
-                  href={child.href}
-                  className="block px-5 py-2 text-white hover:bg-gradient-to-r hover:from-cyan-500/10 hover:to-blue-500/10 hover:text-cyan-400 rounded-lg font-medium text-base transition-colors"
-                  aria-label={child.label}
+                  variants={{
+                    hidden: { opacity: 0, x: 16 },
+                    visible: { opacity: 1, x: 0 },
+                  }}
+                  transition={{ delay: idx * 0.06 }}
                 >
-                  {child.label}
-                </a>
+                  <NavLink
+                    to={child.href}
+                    className={({ isActive }: { isActive: boolean }) =>
+                      `flex items-center gap-2 px-5 py-2 font-medium text-base rounded-lg transition-colors border-l-2 ${
+                        isActive
+                          ? 'text-[#009FE3] border-[#009FE3] bg-[#009fe30a]'
+                          : 'text-[#10163a] border-transparent hover:text-[#009FE3] hover:bg-gray-100/10'
+                      }`
+                    }
+                    aria-label={child.label}
+                  >
+                    {/* Optional: <Icon className="w-4 h-4" /> */}
+                    {child.label}
+                  </NavLink>
+                </motion.div>
               ))}
             </DropdownMenu>
           ))}
-          {/* CTA Button */}
           <motion.a
-            whileHover={{ scale: 1.07, boxShadow: '0 0 0 4px #FFA50044' }}
+            whileHover={{ scale: 1.07 }}
             whileTap={{ scale: 0.97 }}
             href="#contact"
-            className="ml-8 px-7 py-2 rounded-full font-bold bg-[#FFA500] text-[#0a0f2c] shadow-lg hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-300 transition-all duration-200 text-base tracking-wide"
+            className="ml-6 px-6 py-2 rounded-full font-bold bg-[#009FE3] text-white shadow hover:bg-[#007bb5] transition-all"
             aria-label="Get in Touch"
           >
             Get in Touch
@@ -147,7 +199,7 @@ const Navbar: React.FC = () => {
         </div>
         {/* Hamburger */}
         <button
-          className="lg:hidden text-white hover:text-orange-400 focus:outline-none"
+          className="lg:hidden text-[#10163a] hover:text-[#009FE3] focus:outline-none"
           onClick={() => setMobileOpen((v) => !v)}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         >
@@ -166,14 +218,14 @@ const Navbar: React.FC = () => {
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed inset-0 z-40 bg-[#0a0f2c] bg-opacity-95 backdrop-blur flex flex-col px-6 py-8 gap-4 lg:hidden"
+            className="fixed inset-0 z-40 bg-white bg-opacity-95 backdrop-blur flex flex-col px-6 py-8 gap-4 lg:hidden"
           >
             <div className="flex justify-between items-center mb-6">
-              <a href="/assets/images/logo.png" className="flex items-center gap-2" aria-label="Nexverse Home">
+              <NavLink to="/" className="flex items-center" aria-label="Nexverse Home">
                 <NexverseLogo />
-              </a>
+              </NavLink>
               <button
-                className="text-white hover:text-orange-400 focus:outline-none"
+                className="text-[#10163a] hover:text-[#009FE3] focus:outline-none"
                 onClick={() => setMobileOpen(false)}
                 aria-label="Close menu"
               >
@@ -182,29 +234,29 @@ const Navbar: React.FC = () => {
             </div>
             {navLinks.map((item) => (
               <div key={item.label} className="mb-2">
-                <div className="flex items-center gap-2 text-white font-semibold text-lg">
+                <div className="flex items-center gap-2 text-[#10163a] font-semibold text-lg">
                   {item.label}
                 </div>
                 <div className="ml-4 mt-2 flex flex-col gap-1">
                   {item.children.map((child) => (
-                    <a
+                    <NavLink
                       key={child.label}
-                      href={child.href}
-                      className="block px-3 py-2 text-white hover:bg-gradient-to-r hover:from-cyan-500/10 hover:to-blue-500/10 hover:text-cyan-400 rounded-lg font-medium text-base transition-colors"
+                      to={child.href}
+                      className="block px-3 py-2 text-[#10163a] hover:text-[#009FE3] border-b-2 border-transparent hover:border-[#009FE3] rounded-lg font-medium text-base transition-colors"
                       aria-label={child.label}
                       onClick={() => setMobileOpen(false)}
                     >
                       {child.label}
-                    </a>
+                    </NavLink>
                   ))}
                 </div>
               </div>
             ))}
             <motion.a
-              whileHover={{ scale: 1.07, boxShadow: '0 0 0 4px #FFA50044' }}
+              whileHover={{ scale: 1.07 }}
               whileTap={{ scale: 0.97 }}
               href="#contact"
-              className="mt-6 px-6 py-3 rounded-full font-bold bg-[#FFA500] text-[#0a0f2c] shadow-lg hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-300 transition-all duration-200 text-base tracking-wide border-2 border-transparent hover:border-orange-400 text-center"
+              className="mt-6 px-6 py-3 rounded-full font-bold bg-[#009FE3] text-white shadow hover:bg-[#007bb5] transition-all text-base tracking-wide border-2 border-transparent text-center"
               aria-label="Get in Touch"
               onClick={() => setMobileOpen(false)}
             >
