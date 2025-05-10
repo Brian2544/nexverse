@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDownIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, Bars3Icon, XMarkIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { NavLink, useLocation } from 'react-router-dom';
+import ContactModal from '../modals/ContactModal';
 
 const navLinks = [
   {
@@ -59,6 +60,8 @@ const DropdownMenu = ({ label, children, active }: { label: string; children: Re
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const openTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Keyboard accessibility
   useEffect(() => {
@@ -82,13 +85,54 @@ const DropdownMenu = ({ label, children, active }: { label: string; children: Re
 
   useOnClickOutside(ref, () => setOpen(false));
 
+  // Open with delay on hover in
+  const handleMouseEnter = () => {
+    if (closeTimeout.current) {
+      clearTimeout(closeTimeout.current);
+      closeTimeout.current = null;
+    }
+    openTimeout.current = setTimeout(() => setOpen(true), 200);
+  };
+
+  // Close with delay on hover out
+  const handleMouseLeave = () => {
+    if (openTimeout.current) {
+      clearTimeout(openTimeout.current);
+      openTimeout.current = null;
+    }
+    closeTimeout.current = setTimeout(() => setOpen(false), 300);
+  };
+
+  // Keep dropdown open for 3 seconds after click
+  const handleClick = () => {
+    if (openTimeout.current) {
+      clearTimeout(openTimeout.current);
+      openTimeout.current = null;
+    }
+    setOpen(true);
+    if (closeTimeout.current) clearTimeout(closeTimeout.current);
+    closeTimeout.current = setTimeout(() => setOpen(false), 3000);
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (openTimeout.current) clearTimeout(openTimeout.current);
+      if (closeTimeout.current) clearTimeout(closeTimeout.current);
+    };
+  }, []);
+
   return (
-    <div className="relative" ref={ref} onMouseLeave={() => setOpen(false)}>
+    <div
+      className="relative"
+      ref={ref}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <button
         ref={buttonRef}
         className={`flex items-center gap-1 px-4 py-2 font-bold transition-colors focus:outline-none rounded-xl ${active ? 'text-[#009FE3] border-b-2 border-[#009FE3] bg-[#009fe30a]' : 'text-[#10163a] hover:text-[#009FE3]'} `}
-        onMouseEnter={() => setOpen(true)}
-        onClick={() => setOpen((v) => !v)}
+        onClick={handleClick}
         aria-haspopup="true"
         aria-expanded={open}
         aria-label={label}
@@ -103,7 +147,7 @@ const DropdownMenu = ({ label, children, active }: { label: string; children: Re
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 16 }}
-            transition={{ duration: 0.22 }}
+            transition={{ duration: 0.22, exit: { duration: 0.44 } }}
             className="absolute left-0 mt-3 min-w-[220px] rounded-xl shadow-2xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 py-2 z-50 backdrop-blur-md"
             style={{ backdropFilter: 'blur(12px)' }}
           >
@@ -137,7 +181,10 @@ const NexverseLogo = () => (
 const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
   const location = useLocation();
+  const getInTouchBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -149,15 +196,22 @@ const Navbar: React.FC = () => {
   const isGroupActive = (children: { href: string }[]) =>
     children.some((child) => location.pathname.startsWith(child.href));
 
+  const openContactModal = () => {
+    if (getInTouchBtnRef.current) {
+      setButtonRect(getInTouchBtnRef.current.getBoundingClientRect());
+    }
+    setIsContactModalOpen(true);
+  };
+
   return (
     <nav className="sticky top-0 z-50 w-full bg-white shadow-sm">
-      <div className="flex items-center justify-between px-10 py-3">
+      <div className="flex items-center justify-between px-2 py-2 flex-nowrap w-full">
         {/* Logo */}
-        <NavLink to="/" className="flex items-center" aria-label="Nexverse Home">
+        <NavLink to="/" className="flex items-center flex-shrink-0 min-w-[60px] max-w-[110px]" aria-label="Nexverse Home">
           <NexverseLogo />
         </NavLink>
         {/* Nav Links */}
-        <div className="hidden lg:flex items-center gap-10">
+        <div className="hidden lg:flex items-center gap-1 flex-nowrap flex-shrink min-w-0 w-full justify-center">
           {navLinks.map((item) => (
             <DropdownMenu label={item.label} key={item.label} active={isGroupActive(item.children)}>
               {item.children.map((child, idx) => (
@@ -172,30 +226,40 @@ const Navbar: React.FC = () => {
                   <NavLink
                     to={child.href}
                     className={({ isActive }: { isActive: boolean }) =>
-                      `flex items-center gap-2 px-5 py-2 font-medium text-base rounded-lg transition-colors border-l-2 ${
+                      `flex items-center gap-1 px-1.5 py-1.5 font-medium text-sm rounded-lg transition-colors border-l-2 ${
                         isActive
                           ? 'text-[#009FE3] border-[#009FE3] bg-[#009fe30a]'
                           : 'text-[#10163a] border-transparent hover:text-[#009FE3] hover:bg-gray-100/10'
                       }`
                     }
                     aria-label={child.label}
+                    style={{ whiteSpace: 'nowrap' }}
                   >
-                    {/* Optional: <Icon className="w-4 h-4" /> */}
                     {child.label}
                   </NavLink>
                 </motion.div>
               ))}
             </DropdownMenu>
           ))}
-          <motion.a
+          
+          <motion.div
             whileHover={{ scale: 1.07 }}
             whileTap={{ scale: 0.97 }}
-            href="#contact"
-            className="ml-6 px-6 py-2 rounded-full font-bold bg-[#009FE3] text-white shadow hover:bg-[#007bb5] transition-all"
-            aria-label="Get in Touch"
+            className="ml-1 flex-shrink-0 max-w-[150px]"
           >
-            Get in Touch
-          </motion.a>
+            <button
+              ref={getInTouchBtnRef}
+              onClick={openContactModal}
+              className="group flex items-center px-3 py-1.5 rounded-full font-bold bg-gradient-to-r from-[#009FE3] to-[#FFA500] text-white shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009FE3]/40 text-sm min-w-[90px] max-w-[150px]"
+              aria-label="Get in Touch"
+              style={{ whiteSpace: 'nowrap' }}
+            >
+              <span className="mr-2">Get in touch</span>
+              <span className="flex items-center justify-center w-7 h-7 rounded-full bg-white text-[#009FE3] group-hover:bg-gradient-to-r group-hover:from-[#FFA500] group-hover:to-[#009FE3] group-hover:text-white transition-all">
+                <ArrowRightIcon className="w-4 h-4" />
+              </span>
+            </button>
+          </motion.div>
         </div>
         {/* Hamburger */}
         <button
@@ -252,19 +316,40 @@ const Navbar: React.FC = () => {
                 </div>
               </div>
             ))}
-            <motion.a
+            
+            <motion.div
               whileHover={{ scale: 1.07 }}
               whileTap={{ scale: 0.97 }}
-              href="#contact"
-              className="mt-6 px-6 py-3 rounded-full font-bold bg-[#009FE3] text-white shadow hover:bg-[#007bb5] transition-all text-base tracking-wide border-2 border-transparent text-center"
-              aria-label="Get in Touch"
-              onClick={() => setMobileOpen(false)}
+              className="mt-6"
             >
-              Get in Touch
-            </motion.a>
+              <button
+                onClick={() => {
+                  if (getInTouchBtnRef.current) {
+                    setButtonRect(getInTouchBtnRef.current.getBoundingClientRect());
+                  }
+                  setIsContactModalOpen(true);
+                  setMobileOpen(false);
+                }}
+                className="group flex items-center px-6 py-3 rounded-full font-bold bg-gradient-to-r from-[#009FE3] to-[#FFA500] text-white shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009FE3]/40 text-base tracking-wide border-2 border-transparent text-center w-full"
+                aria-label="Get in Touch"
+                ref={getInTouchBtnRef}
+              >
+                <span className="mr-3">Get in touch</span>
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white text-[#009FE3] group-hover:bg-gradient-to-r group-hover:from-[#FFA500] group-hover:to-[#009FE3] group-hover:text-white transition-all">
+                  <ArrowRightIcon className="w-5 h-5" />
+                </span>
+              </button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+        anchorRect={buttonRect}
+      />
     </nav>
   );
 };
