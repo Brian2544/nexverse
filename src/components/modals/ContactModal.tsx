@@ -98,7 +98,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
   let modalStyle: React.CSSProperties = {};
   if (anchorRect && window.innerWidth >= 768) {
     // Desktop: position just below the Get in Touch button, aligned left, but prevent right overflow
-    const modalWidth = 340;
+    const modalWidth = 420;
     let left = anchorRect.left;
     if (left + modalWidth > window.innerWidth - 16) { // 16px margin from right
       left = window.innerWidth - modalWidth - 16;
@@ -232,7 +232,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
                           <div className="mt-0.5">{info.icon}</div>
                           <div>
                             <h4 className="text-white font-medium text-xs mb-0.5">{info.label}</h4>
-                            <p className="text-[#b0b8c9] text-xs">{info.value}</p>
+                            <p className="text-[#b0b8c9] text-xs whitespace-nowrap">{info.value}</p>
                           </div>
                         </div>
                       ))}
