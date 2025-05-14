@@ -97,14 +97,19 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
   // Calculate modal style for anchor
   let modalStyle: React.CSSProperties = {};
   if (anchorRect && window.innerWidth >= 768) {
-    // Desktop: position below button
+    // Desktop: position just below the Get in Touch button, aligned left, but prevent right overflow
+    const modalWidth = 340;
+    let left = anchorRect.left;
+    if (left + modalWidth > window.innerWidth - 16) { // 16px margin from right
+      left = window.innerWidth - modalWidth - 16;
+    }
     modalStyle = {
       position: 'fixed',
-      left: Math.min(anchorRect.left, window.innerWidth - 384 - 24), // 384px = max-w-md, 24px margin
+      left,
       top: anchorRect.bottom + 8, // 8px gap below button
       zIndex: 9999,
-      width: '100%',
-      maxWidth: 384,
+      width: modalWidth,
+      maxWidth: '95vw',
     };
   } else {
     // Centered fallback (mobile)
@@ -138,112 +143,118 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
             exit={{ opacity: 0, scale: 0.97, y: 20 }}
             transition={{ type: 'spring', duration: 0.5 }}
             style={modalStyle}
-            className="bg-[#101A2A] rounded-2xl shadow-2xl z-50 overflow-hidden max-h-[90vh] flex flex-col"
+            className="bg-[#101A2A] rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col"
           >
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 text-gray-400 hover:text-[#009FE3] transition-colors z-10"
+              className="absolute top-3 right-3 text-gray-400 hover:text-[#009FE3] transition-colors z-10"
               aria-label="Close modal"
             >
-              <XMarkIcon className="w-6 h-6" />
+              <XMarkIcon className="w-5 h-5" />
             </button>
             {/* Content */}
-            <div className="p-6 overflow-y-auto flex-1">
-              <h2 className="text-2xl font-extrabold text-white mb-2">Get in Touch</h2>
-              <p className="text-[#b0b8c9] mb-6 text-sm">Ready to transform your business? Let's start the conversation.</p>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-xs font-medium text-[#b0b8c9] mb-1">Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 bg-[#17213a] border border-[#22304d] rounded-lg text-white focus:ring-2 focus:ring-[#009FE3] focus:border-transparent transition-all placeholder-[#b0b8c9] text-sm"
-                    required
-                    placeholder="Your name"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-xs font-medium text-[#b0b8c9] mb-1">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 bg-[#17213a] border border-[#22304d] rounded-lg text-white focus:ring-2 focus:ring-[#009FE3] focus:border-transparent transition-all placeholder-[#b0b8c9] text-sm"
-                    required
-                    placeholder="you@email.com"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="subject" className="block text-xs font-medium text-[#b0b8c9] mb-1">Subject</label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 bg-[#17213a] border border-[#22304d] rounded-lg text-white focus:ring-2 focus:ring-[#009FE3] focus:border-transparent transition-all placeholder-[#b0b8c9] text-sm"
-                    required
-                    placeholder="Subject"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-xs font-medium text-[#b0b8c9] mb-1">Message</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={3}
-                    className="w-full px-3 py-2 bg-[#17213a] border border-[#22304d] rounded-lg text-white focus:ring-2 focus:ring-[#009FE3] focus:border-transparent transition-all placeholder-[#b0b8c9] text-sm"
-                    required
-                    placeholder="Type your message..."
-                  />
-                </div>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  type="submit"
-                  className="w-full px-4 py-2 rounded-lg font-semibold text-white bg-[#FF6F61] hover:bg-[#FFA500] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#009FE3]/40 text-sm"
-                  style={{ background: 'linear-gradient(90deg, #FF6F61 0%, #FFA500 100%)' }}
-                >
-                  Send Message
-                </motion.button>
-              </form>
-              <div className="mt-6 border-t border-[#22304d] pt-4">
-                <h3 className="text-base font-bold text-white mb-3">Contact Information</h3>
-                <div className="space-y-3 mb-4">
-                  {contactInfo.map((info) => (
-                    <div className="flex items-start space-x-3" key={info.label}>
-                      <div className="mt-0.5">{info.icon}</div>
-                      <div>
-                        <h4 className="text-white font-medium text-xs mb-0.5">{info.label}</h4>
-                        <p className="text-[#b0b8c9] text-xs">{info.value}</p>
-                      </div>
+            <div className="p-4">
+              <h2 className="text-xl font-extrabold text-white mb-1">Get in Touch</h2>
+              <p className="text-[#b0b8c9] mb-4 text-xs">Ready to transform your business? Let's start the conversation.</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2 md:col-span-1">
+                  <form onSubmit={handleSubmit} className="space-y-3">
+                    <div>
+                      <label htmlFor="name" className="block text-xs font-medium text-[#b0b8c9] mb-0.5">Name</label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="w-full px-2 py-1.5 bg-[#17213a] border border-[#22304d] rounded-lg text-white focus:ring-2 focus:ring-[#009FE3] focus:border-transparent transition-all placeholder-[#b0b8c9] text-xs"
+                        required
+                        placeholder="Your name"
+                      />
                     </div>
-                  ))}
-                </div>
-                <h4 className="text-white font-medium mb-2 text-xs">Follow Us</h4>
-                <div className="flex space-x-3">
-                  {socials.map((social) => (
-                    <motion.a
-                      key={social.name}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="w-7 h-7 rounded-full flex items-center justify-center border-2 border-[#009FE3] text-[#009FE3] hover:bg-[#009FE3] hover:text-white transition-colors"
-                      aria-label={social.name}
+                    <div>
+                      <label htmlFor="email" className="block text-xs font-medium text-[#b0b8c9] mb-0.5">Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full px-2 py-1.5 bg-[#17213a] border border-[#22304d] rounded-lg text-white focus:ring-2 focus:ring-[#009FE3] focus:border-transparent transition-all placeholder-[#b0b8c9] text-xs"
+                        required
+                        placeholder="you@email.com"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="subject" className="block text-xs font-medium text-[#b0b8c9] mb-0.5">Subject</label>
+                      <input
+                        type="text"
+                        id="subject"
+                        name="subject"
+                        value={formData.subject}
+                        onChange={handleChange}
+                        className="w-full px-2 py-1.5 bg-[#17213a] border border-[#22304d] rounded-lg text-white focus:ring-2 focus:ring-[#009FE3] focus:border-transparent transition-all placeholder-[#b0b8c9] text-xs"
+                        required
+                        placeholder="Subject"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="message" className="block text-xs font-medium text-[#b0b8c9] mb-0.5">Message</label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        rows={2}
+                        className="w-full px-2 py-1.5 bg-[#17213a] border border-[#22304d] rounded-lg text-white focus:ring-2 focus:ring-[#009FE3] focus:border-transparent transition-all placeholder-[#b0b8c9] text-xs"
+                        required
+                        placeholder="Type your message..."
+                      />
+                    </div>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      type="submit"
+                      className="w-full px-3 py-1.5 rounded-lg font-semibold text-white bg-[#FF6F61] hover:bg-[#FFA500] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#009FE3]/40 text-xs"
+                      style={{ background: 'linear-gradient(90deg, #FF6F61 0%, #FFA500 100%)' }}
                     >
-                      {social.icon}
-                    </motion.a>
-                  ))}
+                      Send Message
+                    </motion.button>
+                  </form>
+                </div>
+                <div className="col-span-2 md:col-span-1">
+                  <div className="border-t md:border-t-0 md:border-l border-[#22304d] pt-3 md:pt-0 md:pl-4">
+                    <h3 className="text-sm font-bold text-white mb-2">Contact Information</h3>
+                    <div className="space-y-2 mb-3">
+                      {contactInfo.map((info) => (
+                        <div className="flex items-start space-x-2" key={info.label}>
+                          <div className="mt-0.5">{info.icon}</div>
+                          <div>
+                            <h4 className="text-white font-medium text-xs mb-0.5">{info.label}</h4>
+                            <p className="text-[#b0b8c9] text-xs">{info.value}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <h4 className="text-white font-medium mb-1.5 text-xs">Follow Us</h4>
+                    <div className="flex space-x-2">
+                      {socials.map((social) => (
+                        <motion.a
+                          key={social.name}
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="w-6 h-6 rounded-full flex items-center justify-center border-2 border-[#009FE3] text-[#009FE3] hover:bg-[#009FE3] hover:text-white transition-colors"
+                          aria-label={social.name}
+                        >
+                          {social.icon}
+                        </motion.a>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
