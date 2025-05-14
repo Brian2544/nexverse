@@ -6,6 +6,14 @@ import ContactModal from '../modals/ContactModal';
 
 const navLinks = [
   {
+    label: 'About Us',
+    children: [
+      { label: 'Our Vision', href: '/about/our-vision' },
+      { label: 'Our Mission', href: '/about/our-mission' },
+      { label: 'Our Core Values', href: '/about/our-core-values' },
+    ],
+  },
+  {
     label: 'Consulting Services',
     children: [
       { label: 'Strategy Consulting', href: '/services/strategy-consulting' },
@@ -33,14 +41,7 @@ const navLinks = [
       { label: 'Data Protection & Compliance', href: '/training/data-protection' },
     ],
   },
-  {
-    label: 'About Us',
-    children: [
-      { label: 'Our Vision', href: '/about/our-vision' },
-      { label: 'Our Mission', href: '/about/our-mission' },
-      { label: 'Our Core Values', href: '/about/our-core-values' },
-    ],
-  },
+
 ];
 
 function useOnClickOutside(ref: any, handler: () => void) {
@@ -131,7 +132,7 @@ const DropdownMenu = ({ label, children, active }: { label: string; children: Re
     >
       <button
         ref={buttonRef}
-        className={`flex items-center gap-1 px-4 py-2 font-bold transition-colors focus:outline-none rounded-xl ${active ? 'text-[#009FE3] border-b-2 border-[#009FE3] bg-[#009fe30a]' : 'text-[#10163a] hover:text-[#009FE3]'} `}
+        className={`flex items-center gap-1 px-4 py-1.5 font-medium transition-colors focus:outline-none rounded-xl ${active ? 'text-[#009FE3] border-b-2 border-[#009FE3] bg-[#009fe30a]' : 'text-[#10163a] hover:text-[#009FE3]'} `}
         onClick={handleClick}
         aria-haspopup="true"
         aria-expanded={open}
@@ -173,7 +174,7 @@ const NexverseLogo = () => (
   <img
     src="/assets/images/logo.png"
     alt="Nexverse Consulting Group LTD"
-    className="h-16 md:h-16 w-auto"
+    className="h-16 md:h-16 w-auto mb-4"
     style={{ maxHeight: '56px' }}
   />
 );
@@ -205,13 +206,13 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white shadow-sm">
-      <div className="flex items-center justify-between px-2 py-2 flex-nowrap w-full">
+      <div className="flex items-center justify-between px-2 py-1.5 flex-nowrap w-full">
         {/* Logo */}
-        <NavLink to="/" className="flex items-center flex-shrink-0 min-w-[60px] max-w-[110px]" aria-label="Nexverse Home">
+        <NavLink to="/" className="flex items-center" aria-label="Nexverse Home">
           <NexverseLogo />
         </NavLink>
         {/* Nav Links */}
-        <div className="hidden lg:flex items-center gap-1 flex-nowrap flex-shrink min-w-0 w-full justify-center">
+        <div className="hidden lg:flex items-center gap-0.5 flex-nowrap flex-shrink min-w-0 w-full justify-center">
           {navLinks.map((item) => (
             <DropdownMenu label={item.label} key={item.label} active={isGroupActive(item.children)}>
               {item.children.map((child, idx) => (
@@ -226,7 +227,7 @@ const Navbar: React.FC = () => {
                   <NavLink
                     to={child.href}
                     className={({ isActive }: { isActive: boolean }) =>
-                      `flex items-center gap-1 px-1.5 py-1.5 font-medium text-sm rounded-lg transition-colors border-l-2 ${
+                      `flex items-center gap-1 px-1.5 py-1 font-normal text-[14px] rounded-lg transition-colors border-l-2 ${
                         isActive
                           ? 'text-[#009FE3] border-[#009FE3] bg-[#009fe30a]'
                           : 'text-[#10163a] border-transparent hover:text-[#009FE3] hover:bg-gray-100/10'
