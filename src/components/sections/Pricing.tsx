@@ -57,7 +57,7 @@ const Pricing = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="heading mb-4">Pricing Plans</h2>
+          <h2 className="heading mb-4 text-black">Pricing Plans</h2>
           <p className="subheading max-w-2xl mx-auto">
             Choose the perfect plan for your business needs
           </p>

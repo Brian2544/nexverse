@@ -75,7 +75,7 @@ const ServiceCards = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="heading mb-4">What We Offer</h2>
+          <h2 className="heading mb-4 text-black">What We Offer</h2>
           <p className="subheading max-w-2xl mx-auto">
             Comprehensive consulting services tailored to your business needs
           </p>

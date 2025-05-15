@@ -91,7 +91,7 @@ const Process = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="heading mb-4">How We Work</h2>
+          <h2 className="heading mb-4 text-black">How We Work</h2>
           <p className="subheading max-w-2xl mx-auto">
             Our proven methodology ensures successful project delivery
           </p>

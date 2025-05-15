@@ -12,7 +12,7 @@ const About: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl font-bold mb-6">About Nexverse</h2>
+            <h2 className="text-4xl font-bold mb-6 text-black">About Nexverse</h2>
             <p className="text-gray-600 mb-6">
               We are a leading consulting firm specializing in digital transformation and business strategy. 
               With over a decade of experience, we help organizations navigate the complexities of the digital age 

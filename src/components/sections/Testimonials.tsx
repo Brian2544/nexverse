@@ -33,7 +33,7 @@ const Testimonials: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4">What Our Clients Say</h2>
+          <h2 className="text-4xl font-bold mb-4 text-black">What Our Clients Say</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Don't just take our word for it. Here's what our clients have to say about working with us.
           </p>

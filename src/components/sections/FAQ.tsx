@@ -47,7 +47,7 @@ const FAQ = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="heading mb-4">Frequently Asked Questions</h2>
+          <h2 className="heading mb-4 text-black">Frequently Asked Questions</h2>
           <p className="subheading max-w-2xl mx-auto">
             Find answers to common questions about our services
           </p>

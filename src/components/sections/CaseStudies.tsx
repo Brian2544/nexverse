@@ -33,7 +33,7 @@ const CaseStudies: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4">Case Studies</h2>
+          <h2 className="text-4xl text-black font-bold mb-4">Case Studies</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Explore how we've helped organizations across various industries achieve their goals and drive growth.
           </p>

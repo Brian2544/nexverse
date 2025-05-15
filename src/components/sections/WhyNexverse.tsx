@@ -131,6 +131,42 @@ const WhyNexverse: React.FC = () => {
           <Card title="Other Firms" titleColor="text-gray-900" features={otherFirmFeatures} />
           <Card title="With Nexverse" titleColor="text-primary" features={nexverseFeatures} />
         </div>
+        {/* Testimonial Section */}
+        <div className="flex flex-col items-center justify-center mt-16">
+          <div className="flex items-center mb-6">
+            <span className="flex items-center mr-2">
+              <svg width="0" height="0">
+                <linearGradient id="star-gradient" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#21b6e6" />
+                  <stop offset="100%" stopColor="#ffb300" />
+                </linearGradient>
+              </svg>
+              {[...Array(5)].map((_, i) => (
+                <svg
+                  key={i}
+                  className="w-7 h-7"
+                  fill="url(#star-gradient)"
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.175c.969 0 1.371 1.24.588 1.81l-3.38 2.455a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.38-2.454a1 1 0 00-1.175 0l-3.38 2.454c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118L2.05 9.394c-.783-.57-.38-1.81.588-1.81h4.175a1 1 0 00.95-.69l1.286-3.967z" />
+                </svg>
+              ))}
+            </span>
+            <span className="text-lg font-medium text-gray-700">Rated 4.9/5</span>
+          </div>
+          <blockquote className="text-center text-3xl md:text-5xl font-serif text-gray-900 font-normal leading-tight max-w-4xl mb-10">
+            Nexverse revolutionized our customer understanding, boosting retention like<br className="hidden md:block" /> never before.
+          </blockquote>
+          <div className="flex flex-col items-center">
+            <img src="/assets/images/kb.jpg" alt="Brian Omondi" className="w-16 h-16 rounded-full object-cover shadow mb-2" />
+            <div className="text-xl font-semibold text-gray-900">Brian Omondi</div>
+            <div className="flex gap-2 mt-2">
+              <span className="text-white text-sm font-semibold px-3 py-1 rounded-full shadow" style={{background: 'linear-gradient(90deg, #21b6e6 0%, #ffb300 100%)'}}>High conversion</span>
+              <span className="text-white text-sm font-semibold px-3 py-1 rounded-full shadow" style={{background: 'linear-gradient(90deg, #21b6e6 0%, #ffb300 100%)'}}>2x sales</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

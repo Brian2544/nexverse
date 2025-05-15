@@ -7,8 +7,10 @@ const services = [
     title: 'Digital Transformation',
     description: 'Leverage cutting-edge technology to modernize your business and stay ahead.',
     icon: (
-      <svg className="w-14 h-14 text-[#279ac4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      // Device Mobile (Heroicons)
+      <svg className="w-20 h-20 text-[#279ac4]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <rect x="6" y="2" width="12" height="20" rx="3" strokeWidth="2" />
+        <circle cx="12" cy="18" r="1" />
       </svg>
     ),
   },
@@ -16,8 +18,10 @@ const services = [
     title: 'Business Strategy',
     description: 'Develop winning strategies that drive growth and create sustainable advantages.',
     icon: (
-      <svg className="w-14 h-14 text-[#ff5e00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+      // Trending Up (Heroicons)
+      <svg className="w-20 h-20 text-[#ff5e00]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 17l6-6 4 4 8-8" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M14 7h7v7" />
       </svg>
     ),
   },
@@ -25,8 +29,11 @@ const services = [
     title: 'Technology Consulting',
     description: 'Optimize operations and drive innovation with expert technology guidance.',
     icon: (
-      <svg className="w-14 h-14 text-[#0e254a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+      // Cpu (Lucide)
+      <svg className="w-20 h-20 text-[#0e254a]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <rect x="4" y="4" width="16" height="16" rx="2" />
+        <rect x="9" y="9" width="6" height="6" rx="1" />
+        <path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2" />
       </svg>
     ),
   },
@@ -34,8 +41,9 @@ const services = [
     title: 'Innovation & R&D',
     description: 'Stay ahead of the curve with our research-driven approach to innovation.',
     icon: (
-      <svg className="w-14 h-14 text-[#279ac4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+      // Light Bulb (Heroicons)
+      <svg className="w-20 h-20 text-[#279ac4]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3a7 7 0 00-7 7c0 2.386 1.053 4.507 2.75 5.75V19a2 2 0 002 2h2a2 2 0 002-2v-3.25C17.947 14.507 19 12.386 19 10a7 7 0 00-7-7z" />
       </svg>
     ),
   },
@@ -43,8 +51,9 @@ const services = [
     title: 'Data Analytics',
     description: 'Transform your data into actionable insights for better decision-making.',
     icon: (
-      <svg className="w-14 h-14 text-[#ff5e00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+      // Bar Chart (Heroicons)
+      <svg className="w-20 h-20 text-[#ff5e00]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 17v-2a4 4 0 014-4h2a4 4 0 014 4v2m0 0v2a4 4 0 01-4 4H7a4 4 0 01-4-4v-2m16 0v2a4 4 0 01-4 4h-2a4 4 0 01-4-4v-2" />
       </svg>
     ),
   },
@@ -52,8 +61,9 @@ const services = [
     title: 'Change Management',
     description: 'Navigate organizational change with confidence using proven methodologies.',
     icon: (
-      <svg className="w-14 h-14 text-[#0e254a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+      // Refresh (Heroicons)
+      <svg className="w-20 h-20 text-[#0e254a]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v6h6M20 20v-6h-6M4 20a9 9 0 0116-8.485M20 4a9 9 0 01-16 8.485" />
       </svg>
     ),
   },
@@ -61,9 +71,11 @@ const services = [
     title: 'Strategy Consulting',
     description: 'Expert advice to help you define and achieve your business goals.',
     icon: (
-      <svg className="w-14 h-14 text-[#279ac4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" strokeWidth="2" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6l4 2" />
+      // Target (Lucide)
+      <svg className="w-20 h-20 text-[#279ac4]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" />
+        <circle cx="12" cy="12" r="6" />
+        <circle cx="12" cy="12" r="2" />
       </svg>
     ),
   },
@@ -71,9 +83,12 @@ const services = [
     title: 'IT Infrastructure',
     description: 'Build a robust, scalable, and secure IT foundation for your business.',
     icon: (
-      <svg className="w-14 h-14 text-[#ff5e00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <rect x="3" y="7" width="18" height="13" rx="2" strokeWidth="2" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 3v4M8 3v4M3 11h18" />
+      // Server (Heroicons)
+      <svg className="w-20 h-20 text-[#ff5e00]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <rect x="3" y="7" width="18" height="6" rx="2" />
+        <rect x="3" y="15" width="18" height="6" rx="2" />
+        <circle cx="7.5" cy="10" r="1" />
+        <circle cx="7.5" cy="18" r="1" />
       </svg>
     ),
   },
@@ -81,9 +96,10 @@ const services = [
     title: 'Web Design & Development',
     description: 'Create stunning, user-friendly websites and applications that drive results.',
     icon: (
-      <svg className="w-14 h-14 text-[#0e254a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <rect x="3" y="4" width="18" height="16" rx="2" strokeWidth="2" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 2v4M16 2v4M3 10h18" />
+      // Code (Lucide)
+      <svg className="w-20 h-20 text-[#0e254a]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
       </svg>
     ),
   },
@@ -91,8 +107,10 @@ const services = [
     title: 'Information Security',
     description: 'Protect your data and systems with advanced security solutions.',
     icon: (
-      <svg className="w-14 h-14 text-[#279ac4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 17v.01M7 10v2a5 5 0 0010 0v-2a5 5 0 00-10 0z" />
+      // Shield Check (Heroicons)
+      <svg className="w-20 h-20 text-[#279ac4]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l8 4v5c0 5.25-3.5 9.74-8 11-4.5-1.26-8-5.75-8-11V7l8-4z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4" />
       </svg>
     ),
   },
@@ -100,9 +118,10 @@ const services = [
     title: 'Business Applications',
     description: 'Streamline your operations with custom business software solutions.',
     icon: (
-      <svg className="w-14 h-14 text-[#ff5e00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <rect x="3" y="7" width="18" height="13" rx="2" strokeWidth="2" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 3v4M8 3v4M3 11h18" />
+      // App Window (Lucide)
+      <svg className="w-20 h-20 text-[#ff5e00]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="M3 9h18" />
       </svg>
     ),
   },
@@ -110,9 +129,11 @@ const services = [
     title: 'IT Service Management',
     description: 'Deliver efficient IT services that align with your business objectives.',
     icon: (
-      <svg className="w-14 h-14 text-[#0e254a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" strokeWidth="2" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6l4 2" />
+      // Clipboard List (Heroicons)
+      <svg className="w-20 h-20 text-[#0e254a]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <rect x="9" y="2" width="6" height="4" rx="1" />
+        <rect x="4" y="6" width="16" height="16" rx="2" />
+        <path d="M9 10h6M9 14h6M9 18h2" />
       </svg>
     ),
   },
@@ -120,9 +141,11 @@ const services = [
     title: 'Strategy Planning & Execution',
     description: 'Turn your vision into reality with actionable, results-driven plans.',
     icon: (
-      <svg className="w-14 h-14 text-[#279ac4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" strokeWidth="2" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6l4 2" />
+      // Calendar Check (Lucide)
+      <svg className="w-20 h-20 text-[#279ac4]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="18" rx="2" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
+        <path d="M9 16l2 2 4-4" />
       </svg>
     ),
   },
@@ -130,9 +153,9 @@ const services = [
     title: 'Governance of Enterprise IT',
     description: 'Ensure compliance and maximize value from your IT investments.',
     icon: (
-      <svg className="w-14 h-14 text-[#ff5e00]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <rect x="3" y="7" width="18" height="13" rx="2" strokeWidth="2" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 3v4M8 3v4M3 11h18" />
+      // Scale (Heroicons)
+      <svg className="w-20 h-20 text-[#ff5e00]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v18m0 0c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z" />
       </svg>
     ),
   },
@@ -140,9 +163,11 @@ const services = [
     title: 'Project Management',
     description: 'Deliver projects on time and within budget with expert management.',
     icon: (
-      <svg className="w-14 h-14 text-[#0e254a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="10" strokeWidth="2" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6l4 2" />
+      // Clipboard Check (Heroicons)
+      <svg className="w-20 h-20 text-[#0e254a]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <rect x="9" y="2" width="6" height="4" rx="1" />
+        <rect x="4" y="6" width="16" height="16" rx="2" />
+        <path d="M9 14l2 2 4-4" />
       </svg>
     ),
   },
@@ -150,8 +175,11 @@ const services = [
     title: 'Data Protection & Compliance',
     description: 'Safeguard sensitive information and meet regulatory requirements.',
     icon: (
-      <svg className="w-14 h-14 text-[#279ac4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 17v.01M7 10v2a5 5 0 0010 0v-2a5 5 0 00-10 0z" />
+      // Lock Closed (Heroicons)
+      <svg className="w-20 h-20 text-[#279ac4]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+        <rect x="6" y="10" width="12" height="10" rx="2" />
+        <path d="M12 16v2" />
+        <path d="M8 10V7a4 4 0 118 0v3" />
       </svg>
     ),
   },
@@ -161,7 +189,7 @@ const CARD_WIDTH = 380;
 const CARD_HEIGHT = 340;
 const CARD_GAP = 5; // 50% reduced gap
 const VISIBLE_CARDS = 3;
-const SCROLL_SPEED = 1.2; // px per frame, adjust for desired speed
+const SCROLL_SPEED = 1.7; // px per frame, increased speed
 
 const Services: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -246,7 +274,7 @@ const Services: React.FC = () => {
         <div className="text-center mb-12">
           <span className="inline-flex items-center justify-center gap-2 mb-2 pb-3 font-bold tracking-wide text-[#0e254a] text-lg">
             <span className="w-2 h-2 rounded-full bg-[#0e254a] inline-block"></span>
-            <span className="text-[#0e254a] text-lg font-bold">Why choose us</span>
+            <span className="text-[#0e254a] text-lg font-bold">Our Services</span>
           </span>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 font-serif leading-tight">
             Expert consulting tailored to<br className="hidden md:block" />
