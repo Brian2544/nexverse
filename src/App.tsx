@@ -4,6 +4,7 @@ import Navbar from './components/layout/Navbar';
 import Hero from './components/sections/Hero';
 import WhyNexverse from './components/sections/WhyNexverse';
 import Services from './components/sections/Services';
+import Process from './components/sections/Process';
 import About from './components/sections/About';
 import CaseStudies from './components/sections/CaseStudies';
 import Testimonials from './components/sections/Testimonials';
@@ -27,6 +28,7 @@ import OurVision from './components/sections/pages/OurVision';
 import OurMission from './components/sections/pages/OurMission';
 import OurCoreValues from './components/sections/pages/OurCoreValues';
 
+
 const App: React.FC = () => {
   return (
     <div className="min-h-screen">
@@ -37,8 +39,9 @@ const App: React.FC = () => {
             <>
               <Hero />
               <WhyNexverse />
-              <Services />
               <About />
+              <Services />
+              <Process />
               <CaseStudies />
               <Testimonials />
               <Contact />

@@ -186,8 +186,8 @@ const services = [
 ];
 
 const CARD_WIDTH = 380;
-const CARD_HEIGHT = 340;
-const CARD_GAP = 5; // 50% reduced gap
+const CARD_HEIGHT = 255;
+const CARD_GAP = 4;
 const VISIBLE_CARDS = 3;
 const SCROLL_SPEED = 1.7; // px per frame, increased speed
 
@@ -269,8 +269,8 @@ const Services: React.FC = () => {
   const totalWidth = (CARD_WIDTH + CARD_GAP) * services.length;
 
   return (
-    <section className="py-20 w-full" style={{ background: 'linear-gradient(90deg, #0e254a 0%, #279ac4 60%, #ff5e00 100%)' }}>
-      <div className="container mx-auto px-1">
+    <section className="py-15 w-full" style={{ background: 'linear-gradient(90deg, #0e254a 0%, #279ac4 60%, #ff5e00 100%)' }}>
+      <div className="container mx-auto px-1" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
         <div className="text-center mb-12">
           <span className="inline-flex items-center justify-center gap-2 mb-2 pb-3 font-bold tracking-wide text-[#0e254a] text-lg">
             <span className="w-2 h-2 rounded-full bg-[#0e254a] inline-block"></span>
@@ -365,10 +365,10 @@ const Services: React.FC = () => {
                   role="listitem"
                   aria-label={card.title}
                 >
-                  <div className="bg-white rounded-2xl p-14 h-full flex flex-col justify-center items-center transition-all duration-300 shadow-lg border border-[#e5e7eb]">
-                    <div className="mb-7">{card.icon}</div>
-                    <div className="text-3xl font-extrabold text-[#0e254a] mb-4 text-center">{card.title}</div>
-                    <div className="text-[#10163a] text-center text-base font-normal leading-relaxed tracking-normal">{card.description}</div>
+                  <div className="bg-white rounded-2xl p-8 h-full flex flex-col justify-center items-center transition-all duration-300 shadow-lg border border-[#e5e7eb]">
+                    <div className="mb-4">{card.icon}</div>
+                    <div className="text-2xl font-extrabold text-[#0e254a] mb-2 text-center">{card.title}</div>
+                    <div className="text-[#10163a] text-center text-sm font-normal leading-relaxed tracking-normal">{card.description}</div>
                   </div>
                 </motion.div>
               );

@@ -4,8 +4,11 @@ import { motion } from 'framer-motion';
 const Hero = () => {
   return (
     <section className="relative h-auto py-20 flex items-center justify-center overflow-hidden">
-      {/* Animated Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-light to-primary animate-gradient" />
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 w-full h-full">
+        <img src="/assets/images/building_websites.jpg" alt="Hero Background" className="w-full h-full object-cover object-center" style={{ zIndex: 0 }} />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/60" style={{ zIndex: 1 }} />
+      </div>
 
       <div className="container relative z-10 text-center">
         <motion.h1
