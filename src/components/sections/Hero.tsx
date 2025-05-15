@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-auto py-20 flex items-center justify-center overflow-hidden">
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-light to-primary animate-gradient" />
 
@@ -12,7 +12,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="heading mb-6"
+          className="heading mb-6 text-gray-900"
         >
           Strategic Consulting for
           <span className="text-secondary block mt-2">Real-World Impact</span>
@@ -22,7 +22,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="subheading max-w-2xl mx-auto mb-12"
+          className="subheading max-w-2xl mx-auto mb-12 text-gray-800"
         >
           Transform your business with data-driven strategies and innovative solutions
           that drive sustainable growth and competitive advantage.

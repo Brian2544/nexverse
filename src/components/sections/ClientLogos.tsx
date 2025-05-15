@@ -21,7 +21,7 @@ const ClientLogos = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="text-2xl font-semibold text-white mb-4">
+          <h2 className="text-2xl font-semibold text-blue-900 mb-4">
             Trusted by Industry Leaders
           </h2>
           <p className="text-secondary-light">

@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Hero from './components/sections/Hero';
+import WhyNexverse from './components/sections/WhyNexverse';
 import Services from './components/sections/Services';
 import About from './components/sections/About';
 import CaseStudies from './components/sections/CaseStudies';
@@ -35,6 +36,7 @@ const App: React.FC = () => {
           <Route path="/" element={
             <>
               <Hero />
+              <WhyNexverse />
               <Services />
               <About />
               <CaseStudies />

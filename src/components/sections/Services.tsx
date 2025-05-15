@@ -69,7 +69,7 @@ const Services: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4">Our Services</h2>
+          <h2 className="text-4xl font-bold mb-4 text-gray-900">Our Services</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             We offer a comprehensive suite of consulting services designed to help your business thrive in the digital age.
           </p>
@@ -86,8 +86,8 @@ const Services: React.FC = () => {
               className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="mb-6">{service.icon}</div>
-              <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
-              <p className="text-gray-600">{service.description}</p>
+              <h3 className="text-xl font-semibold mb-4 text-gray-900">{service.title}</h3>
+              <p className="text-gray-700">{service.description}</p>
             </motion.div>
           ))}
         </div>

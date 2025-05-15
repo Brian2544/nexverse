@@ -1,124 +1,139 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
-const features = [
+const otherFirmFeatures = [
+  {
+    title: 'Generic Strategies',
+    description: 'One-size-fits-all solutions that lack personalized insights and flexibility.'
+  },
+  {
+    title: 'Limited Guidance',
+    description: 'Clients are left to navigate complex challenges with minimal expert support.'
+  },
+  {
+    title: 'Hidden Fees',
+    description: 'Unexpected costs and additional charges that inflate your total investment.'
+  }
+];
+
+const nexverseFeatures = [
   {
     title: 'Transparent Processes',
-    description: 'Clear communication and methodology at every step of your journey.',
-    icon: (
-      <svg
-        className="w-8 h-8"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
+    description: 'Clear communication and open dialogue throughout every project phase, ensuring complete visibility into our methodologies.'
   },
   {
     title: 'Enterprise-Grade Solutions',
-    description: 'Scalable and robust solutions designed for business growth.',
-    icon: (
-      <svg
-        className="w-8 h-8"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-        />
-      </svg>
-    ),
-  },
-  {
-    title: 'Global Reach',
-    description: 'International expertise and local market understanding.',
-    icon: (
-      <svg
-        className="w-8 h-8"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      </svg>
-    ),
+    description: 'Scalable, secure, and robust solutions designed to meet the complex needs of modern enterprises.'
   },
   {
     title: 'Certified Experts',
-    description: 'Industry-leading professionals with proven track records.',
-    icon: (
-      <svg
-        className="w-8 h-8"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-        />
-      </svg>
-    ),
-  },
+    description: 'Highly qualified professionals with industry-recognized certifications and extensive practical experience.'
+  }
 ];
 
-const WhyNexverse = () => {
-  return (
-    <section className="section bg-primary">
-      <div className="container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h2 className="heading mb-4">Why Nexverse?</h2>
-          <p className="subheading max-w-2xl mx-auto">
-            We combine industry expertise with innovative solutions to deliver
-            exceptional results for our clients.
-          </p>
-        </motion.div>
+const tickColors = [
+  'text-[#279ac4]', // sky blue
+  'text-[#ff5e00]', // orange
+  'text-[#0e254a]', // deep navy
+];
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              className="bg-primary-light p-8 rounded-lg hover:transform hover:scale-105 transition-all duration-300"
-            >
-              <div className="text-secondary mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-white mb-2">
-                {feature.title}
-              </h3>
-              <p className="text-secondary-light">{feature.description}</p>
-            </motion.div>
-          ))}
+const borderGradient =
+  'linear-gradient(135deg, #0A192F, #64FFDA, #FF6B6B)';
+const shadowGradient =
+  '0 8px 48px 0 rgba(10,25,47,0.25), 0 4px 24px 0 rgba(100,255,218,0.18), 0 3px 12px 0 rgba(255,107,107,0.18)';
+
+const listVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.13,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.25 } },
+};
+
+type Feature = {
+  title: string;
+  description: string;
+};
+
+interface CardProps {
+  title: string;
+  titleColor: string;
+  features: Feature[];
+}
+
+const Card: React.FC<CardProps> = ({ title, titleColor, features }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 60 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ type: 'spring', stiffness: 60, damping: 18 }}
+      whileHover={{
+        scale: 1.045,
+      }}
+      className="flex-1 bg-white p-8 transition-all duration-300 cursor-pointer"
+      style={{
+        borderRadius: '20px',
+        boxShadow:
+          '0 0 0 2px #fff, 0 0 8px 2px #ff5e00, 0 0 18px 8px #279ac4, 0 0 32px 12px #0e254a',
+      }}
+    >
+      <h3 className={`text-xl font-bold mb-6 ${titleColor} transition-colors duration-200 group-hover:text-accent`}>{title}</h3>
+      <motion.ul
+        className="space-y-6"
+        variants={listVariants}
+        initial="hidden"
+        animate={isInView ? 'show' : 'hidden'}
+      >
+        {features.map((f: Feature, i: number) => (
+          <motion.li
+            key={i}
+            className="flex items-start gap-3 group transition-all duration-200"
+            variants={itemVariants}
+            whileHover={{ scale: 1.04 }}
+          >
+            <CheckCircleIcon className={`w-6 h-6 ${tickColors[i % tickColors.length]} mt-1 transition-colors duration-200 group-hover:text-accent`} />
+            <div>
+              <span className="font-semibold text-gray-900 group-hover:text-primary transition-colors duration-200">{f.title}</span>
+              <div className="text-gray-600 text-sm transition-all duration-200">{f.description}</div>
+            </div>
+          </motion.li>
+        ))}
+      </motion.ul>
+    </motion.div>
+  );
+};
+
+const WhyNexverse: React.FC = () => {
+  return (
+    <section className="py-20 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <span className="inline-flex items-center justify-center gap-2 mb-2 pb-3 font-bold tracking-wide text-[#0e254a] text-lg">
+            <span className="w-2 h-2 rounded-full bg-[#0e254a] inline-block"></span>
+            <span className="text-[#0e254a] text-lg font-bold">Why choose us</span>
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 font-serif leading-tight">
+            Expert consulting tailored to<br className="hidden md:block" />
+            your business success
+          </h2>
+        </div>
+        <div className="flex flex-col md:flex-row gap-8 justify-center items-stretch max-w-4xl mx-auto">
+          <Card title="Other Firms" titleColor="text-gray-900" features={otherFirmFeatures} />
+          <Card title="With Nexverse" titleColor="text-primary" features={nexverseFeatures} />
         </div>
       </div>
     </section>
   );
 };
 
-export default WhyNexverse; 
+export default WhyNexverse;
