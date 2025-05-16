@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import OptimizedImage from '../common/OptimizedImage';
 
 const caseStudies = [
   {
@@ -50,10 +51,12 @@ const CaseStudies: React.FC = () => {
               className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
             >
               <div className="relative h-48">
-                <img
+                <OptimizedImage
                   src={study.image}
                   alt={study.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full"
+                  loading="lazy"
+                  fallbackColor="#F5F5F5"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-primary text-white px-3 py-1 rounded-full text-sm">

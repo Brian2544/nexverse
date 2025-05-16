@@ -16,20 +16,110 @@ const About: React.FC = () => {
         </div>
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           <div>
-            <p className="text-gray-700 text-lg mb-6">
-              NexVerse Consulting Group comprises of a team of highly skilled professionals who are dedicated to providing effective Consulting Solutions for Small and Medium-sized Enterprises, as well as Corporate Organizations in the region. The team at NexVerse has many years of combined experience in assisting organizations realize operational efficiency and competitive advantage.
-            </p>
-            <p className="text-gray-700 text-lg mb-6">
-              At NexVerse, we endavour to create long-term partnerships with organizations, with clear value propositions in offering solutions that enable organizations achieve long-term strategic objectives. We specialize in business and technology strategy consulting, and business transformational solutions for all industries. We incorporate organizational coaching and corporate trainings to ensure continuous business efficiency in all organizational levels. We deliver the highest quality services for today, and for tomorrow.
-            </p>
-            <div className="mb-8">
+            <motion.div
+              className="relative mb-8"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <span
+                className="text-[#0e254a] text-8xl font-bold leading-none mr-2 float-left select-none dropcap-N"
+                style={{
+                  lineHeight: '0.8',
+                  shapeOutside: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+                  float: 'left',
+                  marginRight: '18px',
+                  marginBottom: '8px',
+                  display: 'inline-block',
+                }}
+              >
+                <motion.span
+                  initial={{ scale: 0.7, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                >
+                  N
+                </motion.span>
+              </span>
+              <span className="text-gray-700 text-lg text-justify leading-normal block">
+                exVerse helps organizations unlock efficiency and growth through expert consulting for SMEs and corporates. Our team delivers practical, results-driven solutions for operational efficiency and competitive advantage. We are committed to building trusted relationships and delivering measurable value for every client.
+              </span>
+            </motion.div>
+
+            <motion.div
+              className="mb-8 relative"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
+              <div className="flex flex-col items-center">
+                <p
+                  className="text-gray-700 text-lg text-center max-w-2xl leading-relaxed"
+                >
+                  We partner with clients<br />
+                  to shape strategies and implement change,<br />
+                  specializing in business transformation.<br />
+                  We create long-term partnerships<br />
+                  for lasting impact.
+                </p>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="relative mb-8"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+            >
+              <span
+                className="text-[#0e254a] text-8xl font-bold leading-none mr-2 float-left select-none dropcap-W"
+                style={{
+                  lineHeight: '0.8',
+                  shapeOutside: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+                  float: 'left',
+                  marginRight: '18px',
+                  marginBottom: '8px',
+                  display: 'inline-block',
+                }}
+              >
+                <motion.span
+                  initial={{ scale: 0.7, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                >
+                  W
+                </motion.span>
+              </span>
+              <span className="text-gray-700 text-lg text-justify leading-normal block">
+                e provide coaching and training to ensure business efficiency at all levels, helping organizations thrive today and adapt for tomorrow. We believe in empowering people and fostering a culture of continuous improvement.
+              </span>
+            </motion.div>
+
+            <motion.div
+              className="mb-8"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+            >
               <h3 className="text-2xl font-bold text-[#0e254a] mb-2">Our Vision</h3>
               <p className="text-gray-700 text-base">To be the leading partner for consulting services that continuously transform organizations to improve efficiency while enriching people's lives and aspirations.</p>
-            </div>
-            <div className="mb-8">
+            </motion.div>
+            <motion.div
+              className="mb-8"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.5 }}
+            >
               <h3 className="text-2xl font-bold text-[#0e254a] mb-2">Our Mission</h3>
               <p className="text-gray-700 text-base">Committed to forming lasting partnerships with organizations that will continuously add value in the ever-dynamic business environment.</p>
-            </div>
+            </motion.div>
           </div>
           <div>
             <div className="mb-8">
@@ -57,7 +147,13 @@ const About: React.FC = () => {
                 </li>
               </ul>
             </div>
-            <div className="flex justify-center mb-6">
+            <motion.div
+              className="flex justify-center mb-6"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+            >
               <motion.img
                 src="/assets/images/our_goal.png"
                 alt="Our Goal - Target and Darts"
@@ -69,7 +165,7 @@ const About: React.FC = () => {
                 whileHover={{ scale: 1.08 }}
                 transition={{ type: 'spring', stiffness: 120, damping: 18 }}
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

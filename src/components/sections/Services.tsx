@@ -269,7 +269,7 @@ const Services: React.FC = () => {
   const totalWidth = (CARD_WIDTH + CARD_GAP) * services.length;
 
   return (
-    <section className="py-15 w-full" style={{ background: 'linear-gradient(90deg, #0e254a 0%, #279ac4 60%, #ff5e00 100%)' }}>
+    <section className="py-15 w-full min-h-[400px] z-0" style={{ background: 'linear-gradient(90deg, #0e254a 0%, #279ac4 60%, #ff5e00 100%)', contain: 'layout paint', backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
       <div className="container mx-auto px-1" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
         <div className="text-center mb-12">
           <span className="inline-flex items-center justify-center gap-2 mb-2 pb-3 font-bold tracking-wide text-[#0e254a] text-lg">

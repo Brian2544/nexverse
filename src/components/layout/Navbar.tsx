@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDownIcon, Bars3Icon, XMarkIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { NavLink, useLocation } from 'react-router-dom';
 import ContactModal from '../modals/ContactModal';
 
+// Memoize navLinks to prevent unnecessary re-renders
 const navLinks = [
   {
     label: 'About Us',
@@ -41,28 +42,29 @@ const navLinks = [
       { label: 'Data Protection & Compliance', href: '/training/data-protection' },
     ],
   },
-
 ];
 
-function useOnClickOutside(ref: any, handler: () => void) {
-  useEffect(() => {
-    const listener = (event: MouseEvent) => {
-      if (!ref.current || ref.current.contains(event.target)) {
-        return;
-      }
-      handler();
-    };
-    document.addEventListener('mousedown', listener);
-    return () => document.removeEventListener('mousedown', listener);
-  }, [ref, handler]);
-}
+// Memoized Logo component
+const NexverseLogo = React.memo(() => (
+  <img
+    src="/assets/images/logo.png"
+    alt="Nexverse Consulting Group LTD"
+    className="h-16 md:h-16 w-auto mb-4"
+    style={{ maxHeight: '56px' }}
+    loading="eager"
+  />
+));
 
-const DropdownMenu = ({ label, children, active }: { label: string; children: React.ReactNode; active?: boolean }) => {
+// Memoized DropdownMenu component
+const DropdownMenu = React.memo(({ label, children, active }: { label: string; children: React.ReactNode; active?: boolean }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const openTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Simplified click handler - immediate response
+  const handleClick = useCallback(() => {
+    setOpen(!open);
+  }, [open]);
 
   // Keyboard accessibility
   useEffect(() => {
@@ -86,49 +88,10 @@ const DropdownMenu = ({ label, children, active }: { label: string; children: Re
 
   useOnClickOutside(ref, () => setOpen(false));
 
-  // Open with delay on hover in
-  const handleMouseEnter = () => {
-    if (closeTimeout.current) {
-      clearTimeout(closeTimeout.current);
-      closeTimeout.current = null;
-    }
-    openTimeout.current = setTimeout(() => setOpen(true), 200);
-  };
-
-  // Close with delay on hover out
-  const handleMouseLeave = () => {
-    if (openTimeout.current) {
-      clearTimeout(openTimeout.current);
-      openTimeout.current = null;
-    }
-    closeTimeout.current = setTimeout(() => setOpen(false), 300);
-  };
-
-  // Keep dropdown open for 3 seconds after click
-  const handleClick = () => {
-    if (openTimeout.current) {
-      clearTimeout(openTimeout.current);
-      openTimeout.current = null;
-    }
-    setOpen(true);
-    if (closeTimeout.current) clearTimeout(closeTimeout.current);
-    closeTimeout.current = setTimeout(() => setOpen(false), 3000);
-  };
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (openTimeout.current) clearTimeout(openTimeout.current);
-      if (closeTimeout.current) clearTimeout(closeTimeout.current);
-    };
-  }, []);
-
   return (
     <div
       className="relative"
       ref={ref}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       <button
         ref={buttonRef}
@@ -145,39 +108,50 @@ const DropdownMenu = ({ label, children, active }: { label: string; children: Re
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 16 }}
-            transition={{ duration: 0.22, exit: { duration: 0.44 } }}
-            className="absolute left-0 mt-3 min-w-[220px] rounded-xl shadow-2xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 py-2 z-50 backdrop-blur-md"
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.15 }}
+            className="absolute left-0 mt-2 min-w-[220px] rounded-xl shadow-2xl bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 py-2 z-50 backdrop-blur-md"
             style={{ backdropFilter: 'blur(12px)' }}
-          >
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: {},
-                visible: { transition: { staggerChildren: 0.06 } },
-              }}
             >
               {children}
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
-};
+});
 
-// Logo component
-const NexverseLogo = () => (
-  <img
-    src="/assets/images/logo.png"
-    alt="Nexverse Consulting Group LTD"
-    className="h-16 md:h-16 w-auto mb-4"
-    style={{ maxHeight: '56px' }}
-  />
-);
+// Memoized NavLink component
+const MemoizedNavLink = React.memo(({ to, children, className, onClick }: { 
+  to: string; 
+  children: React.ReactNode; 
+  className: string | (({ isActive }: { isActive: boolean }) => string); 
+  onClick?: () => void;
+}) => (
+  <NavLink
+    to={to}
+    className={className}
+    onClick={onClick}
+    aria-label={typeof children === 'string' ? children : undefined}
+  >
+    {children}
+  </NavLink>
+));
+
+function useOnClickOutside(ref: any, handler: () => void) {
+  useEffect(() => {
+    const listener = (event: MouseEvent) => {
+      if (!ref.current || ref.current.contains(event.target)) {
+        return;
+      }
+      handler();
+    };
+    document.addEventListener('mousedown', listener);
+    return () => document.removeEventListener('mousedown', listener);
+  }, [ref, handler]);
+}
 
 const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -187,58 +161,61 @@ const Navbar: React.FC = () => {
   const location = useLocation();
   const getInTouchBtnRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+  // Memoize scroll handler
+  const handleScroll = useCallback(() => {
+    setScrolled(window.scrollY > 10);
   }, []);
 
-  // Helper to check if a nav group is active
-  const isGroupActive = (children: { href: string }[]) =>
-    children.some((child) => location.pathname.startsWith(child.href));
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
-  const openContactModal = () => {
+  // Memoize active state check
+  const isGroupActive = useCallback((children: { href: string }[]) =>
+    children.some((child) => location.pathname.startsWith(child.href)),
+    [location.pathname]
+  );
+
+  // Memoize contact modal open handler
+  const openContactModal = useCallback(() => {
     if (getInTouchBtnRef.current) {
       setButtonRect(getInTouchBtnRef.current.getBoundingClientRect());
     }
     setIsContactModalOpen(true);
-  };
+  }, []);
+
+  // Memoize mobile menu toggle
+  const toggleMobileMenu = useCallback(() => {
+    setMobileOpen((v) => !v);
+  }, []);
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white shadow-sm">
+    <nav className="sticky top-0 z-50 w-full bg-white shadow-sm" style={{ willChange: 'transform' }}>
       <div className="flex items-center justify-between px-2 py-1.5 flex-nowrap w-full">
         {/* Logo */}
-        <NavLink to="/" className="flex items-center" aria-label="Nexverse Home">
+        <MemoizedNavLink to="/" className="flex items-center" aria-label="Nexverse Home">
           <NexverseLogo />
-        </NavLink>
+        </MemoizedNavLink>
+
         {/* Nav Links */}
         <div className="hidden lg:flex items-center gap-0.5 flex-nowrap flex-shrink min-w-0 w-full justify-center">
           {navLinks.map((item) => (
             <DropdownMenu label={item.label} key={item.label} active={isGroupActive(item.children)}>
-              {item.children.map((child, idx) => (
-                <motion.div
+              {item.children.map((child) => (
+                <MemoizedNavLink
                   key={child.label}
-                  variants={{
-                    hidden: { opacity: 0, x: 16 },
-                    visible: { opacity: 1, x: 0 },
-                  }}
-                  transition={{ delay: idx * 0.06 }}
-                >
-                  <NavLink
                     to={child.href}
                     className={({ isActive }: { isActive: boolean }) =>
-                      `flex items-center gap-1 px-1.5 py-1 font-normal text-[14px] rounded-lg transition-colors border-l-2 ${
+                    `block px-4 py-2 text-[14px] rounded-lg transition-colors ${
                         isActive
-                          ? 'text-[#009FE3] border-[#009FE3] bg-[#009fe30a]'
-                          : 'text-[#10163a] border-transparent hover:text-[#009FE3] hover:bg-gray-100/10'
+                        ? 'text-[#009FE3] bg-[#009fe30a]'
+                        : 'text-[#10163a] hover:text-[#009FE3] hover:bg-gray-100/10'
                       }`
                     }
-                    aria-label={child.label}
-                    style={{ whiteSpace: 'nowrap' }}
                   >
                     {child.label}
-                  </NavLink>
-                </motion.div>
+                </MemoizedNavLink>
               ))}
             </DropdownMenu>
           ))}
@@ -262,10 +239,11 @@ const Navbar: React.FC = () => {
             </button>
           </motion.div>
         </div>
+
         {/* Hamburger */}
         <button
           className="lg:hidden text-[#10163a] hover:text-[#009FE3] focus:outline-none"
-          onClick={() => setMobileOpen((v) => !v)}
+          onClick={toggleMobileMenu}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         >
           {mobileOpen ? (
@@ -275,6 +253,7 @@ const Navbar: React.FC = () => {
           )}
         </button>
       </div>
+
       {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
@@ -286,12 +265,12 @@ const Navbar: React.FC = () => {
             className="fixed inset-0 z-40 bg-white bg-opacity-95 backdrop-blur flex flex-col px-6 py-8 gap-4 lg:hidden"
           >
             <div className="flex justify-between items-center mb-6">
-              <NavLink to="/" className="flex items-center" aria-label="Nexverse Home">
+              <MemoizedNavLink to="/" className="flex items-center" aria-label="Nexverse Home">
                 <NexverseLogo />
-              </NavLink>
+              </MemoizedNavLink>
               <button
                 className="text-[#10163a] hover:text-[#009FE3] focus:outline-none"
-                onClick={() => setMobileOpen(false)}
+                onClick={toggleMobileMenu}
                 aria-label="Close menu"
               >
                 <XMarkIcon className="w-8 h-8" />
@@ -304,15 +283,14 @@ const Navbar: React.FC = () => {
                 </div>
                 <div className="ml-4 mt-2 flex flex-col gap-1">
                   {item.children.map((child) => (
-                    <NavLink
+                    <MemoizedNavLink
                       key={child.label}
                       to={child.href}
                       className="block px-3 py-2 text-[#10163a] hover:text-[#009FE3] border-b-2 border-transparent hover:border-[#009FE3] rounded-lg font-medium text-base transition-colors"
-                      aria-label={child.label}
-                      onClick={() => setMobileOpen(false)}
+                      onClick={toggleMobileMenu}
                     >
                       {child.label}
-                    </NavLink>
+                    </MemoizedNavLink>
                   ))}
                 </div>
               </div>
@@ -355,4 +333,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar; 
+export default React.memo(Navbar); 

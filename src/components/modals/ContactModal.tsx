@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
   anchorRect?: DOMRect | null;
+  source?: 'navbar' | 'process';
 }
 
 interface FormData {
@@ -71,13 +72,15 @@ const socials = [
   ) },
 ];
 
-const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect }) => {
+const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect, source = 'navbar' }) => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     subject: '',
     message: '',
   });
+  const dragControls = useDragControls();
+  const constraintsRef = useRef(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -96,7 +99,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
 
   // Calculate modal style for anchor
   let modalStyle: React.CSSProperties = {};
-  if (anchorRect && window.innerWidth >= 768) {
+  if (source === 'navbar' && anchorRect && window.innerWidth >= 768) {
     // Desktop: position just below the Get in Touch button, aligned left, but prevent right overflow
     const modalWidth = 420;
     let left = anchorRect.left;
@@ -112,7 +115,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
       maxWidth: '95vw',
     };
   } else {
-    // Centered fallback (mobile)
+    // Centered position for process section or mobile
     modalStyle = {
       position: 'fixed',
       left: '50%',
@@ -120,7 +123,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
       transform: 'translate(-50%, -50%)',
       zIndex: 9999,
       width: '95%',
-      maxWidth: 384,
+      maxWidth: 420,
     };
   }
 
@@ -135,6 +138,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50"
             onClick={onClose}
+            ref={constraintsRef}
           />
           {/* Modal */}
           <motion.div
@@ -144,7 +148,20 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
             transition={{ type: 'spring', duration: 0.5 }}
             style={modalStyle}
             className="bg-[#101A2A] rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col"
+            drag
+            dragControls={dragControls}
+            dragMomentum={false}
+            dragConstraints={constraintsRef}
+            dragElastic={0.1}
+            whileDrag={{ cursor: 'grabbing' }}
           >
+            {/* Drag Handle */}
+            <div
+              className="h-8 cursor-grab active:cursor-grabbing bg-[#17213a] flex items-center justify-center"
+              onPointerDown={(e) => dragControls.start(e)}
+            >
+              <div className="w-8 h-1 rounded-full bg-[#22304d]"></div>
+            </div>
             {/* Close Button */}
             <button
               onClick={onClose}

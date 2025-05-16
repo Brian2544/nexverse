@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import OptimizedImage from '../common/OptimizedImage';
 
 const testimonials = [
   {
@@ -50,10 +51,12 @@ const Testimonials: React.FC = () => {
               className="bg-white p-8 rounded-lg shadow-lg"
             >
               <div className="flex items-center mb-6">
-                <img
+                <OptimizedImage
                   src={testimonial.image}
                   alt={testimonial.name}
-                  className="w-16 h-16 rounded-full object-cover mr-4"
+                  className="w-16 h-16 rounded-full mr-4"
+                  loading="lazy"
+                  fallbackColor="#F5F5F5"
                 />
                 <div>
                   <h3 className="font-semibold text-lg">{testimonial.name}</h3>

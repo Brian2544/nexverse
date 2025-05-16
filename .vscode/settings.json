@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
+        "corporates",
+        "dropcap",
         "endavour",
         "headlessui",
         "Nexverse",
@@ -8,5 +10,6 @@
         "Startex",
         "stratex",
         "Westlands"
-    ]
+    ],
+    "css.lint.unknownAtRules": "ignore"
 }

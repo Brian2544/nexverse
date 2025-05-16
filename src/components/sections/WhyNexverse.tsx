@@ -115,7 +115,7 @@ const Card: React.FC<CardProps> = ({ title, titleColor, features }) => {
 
 const WhyNexverse: React.FC = () => {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white min-h-[400px] w-full z-0" style={{ contain: 'layout paint', backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <span className="inline-flex items-center justify-center gap-2 mb-2 pb-3 font-bold tracking-wide text-[#0e254a] text-lg">

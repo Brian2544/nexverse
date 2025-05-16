@@ -10,7 +10,7 @@
   }
   
   body {
-    @apply bg-primary text-white font-sans;
+    @apply bg-white text-gray-900 font-sans;
   }
 }
 
@@ -24,11 +24,11 @@
   }
   
   .btn-primary {
-    @apply bg-accent text-white hover:bg-accent/90;
+    @apply bg-blue-500 text-white hover:bg-blue-600;
   }
   
   .btn-secondary {
-    @apply bg-transparent border-2 border-secondary text-secondary hover:bg-secondary/10;
+    @apply bg-transparent border-2 border-blue-500 text-blue-500 hover:bg-blue-50;
   }
   
   .section {
@@ -40,6 +40,6 @@
   }
   
   .subheading {
-    @apply text-xl md:text-2xl text-secondary-light;
+    @apply text-xl md:text-2xl text-gray-600;
   }
 } 
