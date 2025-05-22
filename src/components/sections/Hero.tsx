@@ -74,7 +74,7 @@ const Hero = () => {
           </motion.div>
         </AnimatePresence>
         {/* Overlay for darkening background for text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
       </div>
       {/* Text Block */}
       <div className="relative z-20 w-full max-w-xl p-6 md:p-12 mb-12 md:mb-20 lg:mb-32">

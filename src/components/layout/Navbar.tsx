@@ -160,6 +160,7 @@ const Navbar: React.FC = () => {
   const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
   const location = useLocation();
   const getInTouchBtnRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Memoize scroll handler
   const handleScroll = useCallback(() => {
@@ -170,6 +171,30 @@ const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setMobileOpen(false);
+      }
+    };
+
+    if (mobileOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileOpen]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   // Memoize active state check
   const isGroupActive = useCallback((children: { href: string }[]) =>
@@ -185,20 +210,15 @@ const Navbar: React.FC = () => {
     setIsContactModalOpen(true);
   }, []);
 
-  // Memoize mobile menu toggle
-  const toggleMobileMenu = useCallback(() => {
-    setMobileOpen((v) => !v);
-  }, []);
-
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white shadow-sm" style={{ willChange: 'transform' }}>
-      <div className="flex items-center justify-between px-2 py-1.5 flex-nowrap w-full">
+    <nav className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'}`}>
+      <div className="flex items-center justify-between px-4 py-2 flex-nowrap w-full">
         {/* Logo */}
         <MemoizedNavLink to="/" className="flex items-center" aria-label="Nexverse Home">
           <NexverseLogo />
         </MemoizedNavLink>
 
-        {/* Nav Links */}
+        {/* Desktop Nav Links */}
         <div className="hidden lg:flex items-center gap-0.5 flex-nowrap flex-shrink min-w-0 w-full justify-center">
           {navLinks.map((item) => (
             <DropdownMenu label={item.label} key={item.label} active={isGroupActive(item.children)}>
@@ -240,10 +260,10 @@ const Navbar: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Hamburger */}
+        {/* Mobile Menu Button */}
         <button
-          className="lg:hidden text-[#10163a] hover:text-[#009FE3] focus:outline-none"
-          onClick={toggleMobileMenu}
+          className="lg:hidden text-[#10163a] hover:text-[#009FE3] focus:outline-none p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         >
           {mobileOpen ? (
@@ -257,69 +277,79 @@ const Navbar: React.FC = () => {
       {/* Mobile Menu */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            initial={{ x: '-100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '-100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed inset-0 z-40 bg-white bg-opacity-95 backdrop-blur flex flex-col px-6 py-8 gap-4 lg:hidden"
-          >
-            <div className="flex justify-between items-center mb-6">
-              <MemoizedNavLink to="/" className="flex items-center" aria-label="Nexverse Home">
-                <NexverseLogo />
-              </MemoizedNavLink>
-              <button
-                className="text-[#10163a] hover:text-[#009FE3] focus:outline-none"
-                onClick={toggleMobileMenu}
-                aria-label="Close menu"
-              >
-                <XMarkIcon className="w-8 h-8" />
-              </button>
-            </div>
-            {navLinks.map((item) => (
-              <div key={item.label} className="mb-2">
-                <div className="flex items-center gap-2 text-[#10163a] font-semibold text-lg">
-                  {item.label}
-                </div>
-                <div className="ml-4 mt-2 flex flex-col gap-1">
-                  {item.children.map((child) => (
-                    <MemoizedNavLink
-                      key={child.label}
-                      to={child.href}
-                      className="block px-3 py-2 text-[#10163a] hover:text-[#009FE3] border-b-2 border-transparent hover:border-[#009FE3] rounded-lg font-medium text-base transition-colors"
-                      onClick={toggleMobileMenu}
-                    >
-                      {child.label}
-                    </MemoizedNavLink>
-                  ))}
-                </div>
-              </div>
-            ))}
-            
+          <>
+            {/* Backdrop */}
             <motion.div
-              whileHover={{ scale: 1.07 }}
-              whileTap={{ scale: 0.97 }}
-              className="mt-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+              onClick={() => setMobileOpen(false)}
+            />
+            {/* Modal */}
+            <motion.div
+              ref={mobileMenuRef}
+              initial={{ opacity: 0, x: '100%' }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: '100%' }}
+              transition={{ type: 'spring', duration: 0.5 }}
+              className="fixed right-0 top-0 z-[101] w-[85vw] h-full bg-white shadow-2xl overflow-hidden flex flex-col"
             >
-              <button
-                onClick={() => {
-                  if (getInTouchBtnRef.current) {
-                    setButtonRect(getInTouchBtnRef.current.getBoundingClientRect());
-                  }
-                  setIsContactModalOpen(true);
-                  setMobileOpen(false);
-                }}
-                className="group flex items-center px-6 py-3 rounded-full font-bold bg-gradient-to-r from-[#009FE3] to-[#FFA500] text-white shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009FE3]/40 text-base tracking-wide border-2 border-transparent text-center w-full"
-                aria-label="Get in Touch"
-                ref={getInTouchBtnRef}
-              >
-                <span className="mr-3">Get in touch</span>
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white text-[#009FE3] group-hover:bg-gradient-to-r group-hover:from-[#FFA500] group-hover:to-[#009FE3] group-hover:text-white transition-all">
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b">
+                <NexverseLogo />
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  className="text-gray-400 hover:text-[#009FE3] transition-colors p-2 rounded-lg hover:bg-gray-100"
+                  aria-label="Close menu"
+                >
+                  <XMarkIcon className="w-8 h-8" />
+                </button>
+              </div>
+
+              {/* Nav Links */}
+              <div className="flex-1 overflow-y-auto py-6">
+                {navLinks.map((item) => (
+                  <div key={item.label} className="px-6 py-3">
+                    <div className="font-semibold text-[#10163a] text-lg mb-3">{item.label}</div>
+                    <div className="pl-4 space-y-3">
+                      {item.children.map((child) => (
+                        <MemoizedNavLink
+                          key={child.label}
+                          to={child.href}
+                          className={({ isActive }) =>
+                            `block py-2 text-base rounded-lg transition-colors ${
+                              isActive
+                                ? 'text-[#009FE3] bg-[#009fe30a]'
+                                : 'text-[#10163a] hover:text-[#009FE3] hover:bg-gray-100/10'
+                            }`
+                          }
+                          onClick={() => setMobileOpen(false)}
+                        >
+                          {child.label}
+                        </MemoizedNavLink>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Footer */}
+              <div className="p-6 border-t">
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    openContactModal();
+                  }}
+                  className="w-full flex items-center justify-center px-6 py-3 rounded-full font-bold bg-gradient-to-r from-[#009FE3] to-[#FFA500] text-white shadow-lg transition-all duration-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#009FE3]/40"
+                >
+                  <span className="mr-2">Get in touch</span>
                   <ArrowRightIcon className="w-5 h-5" />
-                </span>
-              </button>
+                </button>
+              </div>
             </motion.div>
-          </motion.div>
+          </>
         )}
       </AnimatePresence>
 

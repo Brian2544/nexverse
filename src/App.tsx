@@ -13,6 +13,7 @@ import CaseStudies from './components/sections/CaseStudies';
 import Testimonials from './components/sections/Testimonials';
 import Contact from './components/sections/Contact';
 import Footer from './components/layout/Footer';
+import ChatWidget from './components/common/ChatWidget';
 // Import all generated pages
 import StrategyConsulting from './components/sections/pages/StrategyConsulting';
 import TechnologyConsulting from './components/sections/pages/TechnologyConsulting';
@@ -74,6 +75,7 @@ const App: React.FC = () => {
         </Routes>
       </main>
       <Footer />
+      <ChatWidget />
     </div>
   );
 };

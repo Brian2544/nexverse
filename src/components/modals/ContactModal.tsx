@@ -24,7 +24,7 @@ const contactInfo = [
       </svg>
     ),
     label: 'Phone',
-    value: '+254 720943968',
+    value: '+254 757344002',
   },
   {
     icon: (
@@ -33,7 +33,7 @@ const contactInfo = [
       </svg>
     ),
     label: 'Email',
-    value: 'contact@nexverse.com',
+    value: 'drmuchiriconsulting@gmail.com',
   },
   {
     icon: (
@@ -82,12 +82,33 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
   const dragControls = useDragControls();
   const constraintsRef = useRef(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    onClose();
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          to: 'drmuchiriconsulting@gmail.com',
+        }),
+      });
+
+      if (response.ok) {
+        // Show success message
+        alert('Thank you for your message. We will get back to you soon!');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        onClose();
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Sorry, there was an error sending your message. Please try again later.');
+    }
   };
 
   const handleChange = (

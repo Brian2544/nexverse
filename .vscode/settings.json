@@ -9,7 +9,10 @@
         "reengineering",
         "Startex",
         "stratex",
-        "Westlands"
+        "Westlands",
+        "Chatwoot",
+        "chatwoot",
+        "Popout"
     ],
     "css.lint.unknownAtRules": "ignore"
 }
