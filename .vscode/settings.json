@@ -1,18 +1,19 @@
 {
     "cSpell.words": [
+        "chatwoot",
+        "Chatwoot",
         "corporates",
+        "dostuff",
         "dropcap",
         "endavour",
         "headlessui",
         "Nexverse",
         "Omondi",
+        "Popout",
         "reengineering",
         "Startex",
         "stratex",
-        "Westlands",
-        "Chatwoot",
-        "chatwoot",
-        "Popout"
+        "Westlands"
     ],
     "css.lint.unknownAtRules": "ignore"
 }
