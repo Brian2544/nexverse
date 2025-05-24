@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Disclosure } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/24/outline';
 
 const faqs = [
@@ -37,8 +36,29 @@ const faqs = [
 ];
 
 const FAQ = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const closeTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = (idx: number) => {
+    if (closeTimeout.current) {
+      clearTimeout(closeTimeout.current);
+      closeTimeout.current = null;
+    }
+    setOpenIndex(idx);
+  };
+
+  const handleMouseLeave = (idx: number) => {
+    closeTimeout.current = setTimeout(() => {
+      setOpenIndex((current) => (current === idx ? null : current));
+    }, 3000);
+  };
+
+  const handleClick = (idx: number) => {
+    setOpenIndex((current) => (current === idx ? null : idx));
+  };
+
   return (
-    <section id="faq" className="section bg-white min-h-[400px] w-full z-0" style={{ contain: 'layout paint', backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
+    <section id="faq" className="section bg-white min-h-[400px] w-full z-0 scroll-mt-20" style={{ contain: 'layout paint', backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -60,42 +80,58 @@ const FAQ = () => {
         </motion.div>
 
         <motion.div
-          className="max-w-2xl mx-auto p-2 sm:p-4 md:p-6 rounded-2xl"
+          className="max-w-2xl mx-auto grid gap-5"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          style={{ background: 'rgba(10, 25, 47, 0.06)' }}
         >
           {faqs.map((faq, index) => (
-            <Disclosure key={index} as="div" className="">
-              {({ open }) => (
-                <>
-                  <Disclosure.Button className="flex w-full justify-between items-center px-4 sm:px-6 py-4 sm:py-5 text-left text-base sm:text-lg font-semibold text-primary hover:bg-primary-light/10 focus:outline-none transition">
-                    <span>{faq.question}</span>
-                    <span className="flex items-center justify-center w-9 h-9 rounded-full bg-[#0e254a] transition-transform">
-                      <ChevronUpIcon
-                        className={`${open ? 'rotate-180' : ''} h-6 w-6 text-white transition-transform`}
-                      />
-                    </span>
-                  </Disclosure.Button>
-                  <AnimatePresence>
-                    {open && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <Disclosure.Panel className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 text-sm sm:text-base text-gray-700">
-                          {faq.answer}
-                        </Disclosure.Panel>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </>
-              )}
-            </Disclosure>
+            <motion.div
+              key={index}
+              initial={{ boxShadow: '0 1px 4px 0 rgba(16,30,54,0.04)' }}
+              whileHover={{ boxShadow: '0 4px 24px 0 rgba(0,159,227,0.10), 0 2px 8px 0 rgba(255,165,0,0.10)', borderColor: '#009FE3', backgroundColor: '#F7F8FA' }}
+              animate={{ borderColor: openIndex === index ? '#009FE3' : '#F0F1F3', backgroundColor: openIndex === index ? '#F7F8FA' : '#fff' }}
+              transition={{ duration: 0.3 }}
+              className={`transition-colors duration-300 border border-[#F0F1F3] bg-white rounded-2xl shadow-sm overflow-hidden relative`}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={() => handleMouseLeave(index)}
+            >
+              <button
+                className="flex w-full justify-between items-center px-4 sm:px-6 py-4 sm:py-5 text-left text-base sm:text-lg font-semibold text-primary hover:bg-[#F7F8FA] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#009FE3] transition relative z-10"
+                aria-expanded={openIndex === index}
+                aria-controls={`faq-panel-${index}`}
+                onClick={() => handleClick(index)}
+              >
+                <span>{faq.question}</span>
+                <motion.span
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-[#0e254a]"
+                  animate={{ rotate: openIndex === index ? 180 : 0, backgroundColor: openIndex === index ? '#009FE3' : '#0e254a' }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ChevronUpIcon
+                    className={`h-6 w-6 text-white transition-transform`}
+                  />
+                </motion.span>
+              </button>
+              <AnimatePresence initial={false}>
+                {openIndex === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.35 }}
+                  >
+                    <div
+                      id={`faq-panel-${index}`}
+                      className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 text-sm sm:text-base text-gray-700 relative z-10"
+                    >
+                      {faq.answer}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           ))}
         </motion.div>
       </div>

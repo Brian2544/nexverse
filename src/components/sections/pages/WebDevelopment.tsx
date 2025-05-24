@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import OptimizedImage from '../../common/OptimizedImage';
+import ImageWithFallback from '../../common/ImageWithFallback';
 import { 
   CodeBracketIcon, 
   DevicePhoneMobileIcon, 
@@ -115,8 +115,8 @@ const WebDevelopment: React.FC = () => {
       {/* Hero Section */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <OptimizedImage
-            src="/images/web-dev-hero.jpg"
+          <ImageWithFallback
+            src="/images/hero/web-dev-hero.jpg"
             alt="Web Development"
             className="w-full h-full object-cover"
             priority
@@ -204,7 +204,7 @@ const WebDevelopment: React.FC = () => {
                 whileHover={{ y: -5 }}
               >
                 <div className="relative h-48">
-                  <OptimizedImage
+                  <ImageWithFallback
                     src={project.image}
                     alt={project.title}
                     className="object-cover"
@@ -272,7 +272,7 @@ const WebDevelopment: React.FC = () => {
                       className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg"
                     >
                       <div className="w-8 h-8 relative">
-                        <OptimizedImage
+                        <ImageWithFallback
                           src={tech.icon}
                           alt={tech.name}
                           className="object-contain"
@@ -287,8 +287,8 @@ const WebDevelopment: React.FC = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+  </div>
+);
 };
 
 export default WebDevelopment; 

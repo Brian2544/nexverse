@@ -23,7 +23,7 @@ const steps = [
     title: 'Continuous Support',
     description:
       'From implementation to optimization, we provide ongoing guidance and adjustments to ensure long-term growth for you and you business with stratex.',
-    image: '/assets/images/support.jpg',
+    image: '/assets/images/headphones.jpg',
     cta: 'Discover More',
   },
 ];
@@ -41,7 +41,7 @@ const Process = () => {
   };
 
   return (
-    <section className="py-20 bg-white">
+    <section id="process" className="py-20 bg-white scroll-mt-20">
       <div className="container mx-auto px-4">
         {/* Heading */}
         <div className="text-center mb-8">
@@ -85,14 +85,14 @@ const Process = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
-                  className="w-full md:w-1/2 flex justify-center md:justify-end md:pr-8 md:pl-0 mb-6 md:mb-0"
+                  whileHover={{ scale: 1.06 }}
+                  className="w-full md:w-1/2 flex justify-center md:justify-end md:pr-8 md:pl-0 mb-6 md:mb-0 rounded-[20px] transition-all duration-300 overflow-hidden"
                 >
                   <OptimizedImage
                     src={step.image}
                     alt={step.title}
                     className="rounded-[20px] w-[320px] h-[200px]"
                     loading="lazy"
-                    fallbackColor="#F5F5F5"
                   />
                 </motion.div>
                 {/* Timeline number */}

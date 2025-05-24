@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import OptimizedImage from '../../common/OptimizedImage';
+import ImageWithFallback from '../../common/ImageWithFallback';
 import { 
   CloudArrowUpIcon, 
   ShieldCheckIcon, 
@@ -104,7 +105,7 @@ const TechnologyConsulting: React.FC = () => {
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <OptimizedImage
-            src="/images/tech-consulting-hero.jpg"
+            src="/images/hero/tech-consulting-hero.jpg"
             alt="Technology Consulting"
             className="w-full h-full object-cover"
             priority
@@ -112,24 +113,24 @@ const TechnologyConsulting: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-[#009FE3]/90 to-[#009FE3]/70" />
         </div>
         
-        <motion.div 
+          <motion.div
           className="relative z-10 text-center px-4 sm:px-6 lg:px-8"
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6">
-            Technology Consulting
-          </h1>
+              Technology Consulting
+            </h1>
           <p className="text-xl sm:text-2xl text-white/90 max-w-3xl mx-auto">
             Transform your business with cutting-edge technology solutions and expert guidance
           </p>
-        </motion.div>
-      </section>
+          </motion.div>
+    </section>
 
       {/* Feature Grid Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <motion.div 
+        <motion.div
           className="text-center mb-16"
           {...fadeInUp}
         >
@@ -143,10 +144,10 @@ const TechnologyConsulting: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <motion.div
+          <motion.div
               key={feature.title}
               className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300"
-              initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ y: -5 }}
@@ -183,16 +184,16 @@ const TechnologyConsulting: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <motion.div
+          <motion.div
                 key={testimonial.author}
                 className="bg-white rounded-2xl p-8 shadow-lg"
-                initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className="flex items-center mb-6">
                   <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-                    <OptimizedImage
+                    <ImageWithFallback
                       src={testimonial.image}
                       alt={testimonial.author}
                       className="object-cover"
@@ -204,7 +205,7 @@ const TechnologyConsulting: React.FC = () => {
                   </div>
                 </div>
                 <p className="text-gray-600 italic">"{testimonial.quote}"</p>
-              </motion.div>
+          </motion.div>
             ))}
           </div>
         </div>
@@ -213,7 +214,7 @@ const TechnologyConsulting: React.FC = () => {
       {/* Case Studies Section */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
+        <motion.div
             className="text-center mb-16"
             {...fadeInUp}
           >
@@ -236,13 +237,13 @@ const TechnologyConsulting: React.FC = () => {
                 whileHover={{ y: -5 }}
               >
                 <div className="relative h-48">
-                  <OptimizedImage
+                  <ImageWithFallback
                     src={caseStudy.image}
                     alt={caseStudy.title}
                     className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                </div>
+            </div>
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
                     {caseStudy.title}
@@ -252,15 +253,15 @@ const TechnologyConsulting: React.FC = () => {
                   </p>
                   <div className="flex items-center text-sm text-gray-500">
                     <span className="font-medium text-[#009FE3]">{caseStudy.metrics}</span>
-                  </div>
-                </div>
-              </motion.div>
+            </div>
+          </div>
+        </motion.div>
             ))}
           </div>
-        </div>
-      </section>
-    </div>
-  );
+      </div>
+    </section>
+  </div>
+);
 };
 
 export default TechnologyConsulting; 

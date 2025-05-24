@@ -423,8 +423,8 @@ const ITServiceManagement: React.FC = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+  </div>
+);
 };
 
 export default ITServiceManagement; 

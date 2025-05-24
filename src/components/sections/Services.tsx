@@ -1,6 +1,75 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
+// Shader code
+const vertexShader = `
+  precision mediump float;
+  varying vec2 vUv;
+  attribute vec2 a_position;
+
+  void main() {
+    vUv = .5 * (a_position + 1.);
+    gl_Position = vec4(a_position, 0.0, 1.0);
+  }
+`;
+
+const fragmentShader = `
+  precision mediump float;
+  varying vec2 vUv;
+  uniform float u_time;
+  uniform float u_ratio;
+  uniform vec2 u_pointer_position;
+  uniform float u_scroll_progress;
+
+  vec2 rotate(vec2 uv, float th) {
+    return mat2(cos(th), sin(th), -sin(th), cos(th)) * uv;
+  }
+
+  float neuro_shape(vec2 uv, float t, float p) {
+    vec2 sine_acc = vec2(0.);
+    vec2 res = vec2(0.);
+    float scale = 8.;
+
+    for (int j = 0; j < 15; j++) {
+      uv = rotate(uv, 1.);
+      sine_acc = rotate(sine_acc, 1.);
+      vec2 layer = uv * scale + float(j) + sine_acc - t;
+      sine_acc += sin(layer) + 2.4 * p;
+      res += (.5 + .5 * cos(layer)) / scale;
+      scale *= (1.2);
+    }
+    return res.x + res.y;
+  }
+
+  void main() {
+    vec2 uv = .5 * vUv;
+    uv.x *= u_ratio;
+
+    vec2 pointer = vUv - u_pointer_position;
+    pointer.x *= u_ratio;
+    float p = clamp(length(pointer), 0., 1.);
+    p = .5 * pow(1. - p, 2.);
+
+    float t = .001 * u_time;
+    vec3 color = vec3(0.);
+
+    float noise = neuro_shape(uv, t, p);
+
+    noise = 1.2 * pow(noise, 3.);
+    noise += pow(noise, 10.);
+    noise = max(.0, noise - .5);
+    noise *= (1. - length(vUv - .5));
+
+    // Blue/indigo color palette
+    color = vec3(0.1, 0.2, 0.8); // Base blue color
+    color += vec3(0.0, 0.1, 0.4) * sin(3.0 * u_scroll_progress + 1.5); // Indigo variation
+
+    color = color * noise;
+
+    gl_FragColor = vec4(color, noise);
+  }
+`;
+
 // Service card data with icon, title, and description
 const services = [
   {
@@ -186,19 +255,166 @@ const services = [
 ];
 
 const CARD_WIDTH = 380;
-const CARD_HEIGHT = 255;
+const CARD_HEIGHT = 320;
 const CARD_GAP = 4;
 const VISIBLE_CARDS = 3;
 const SCROLL_SPEED = 1.7; // px per frame, increased speed
 
 const Services: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [scrollX, setScrollX] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragScrollStart, setDragScrollStart] = useState(0);
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const [pointer, setPointer] = useState({ x: 0, y: 0, tX: 0, tY: 0 });
+  const glRef = useRef<WebGLRenderingContext | null>(null);
+  const uniformsRef = useRef<{
+    u_time: WebGLUniformLocation | null;
+    u_ratio: WebGLUniformLocation | null;
+    u_pointer_position: WebGLUniformLocation | null;
+    u_scroll_progress: WebGLUniformLocation | null;
+  } | null>(null);
+
+  // Initialize WebGL
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    const canvas = canvasRef.current;
+    const gl = canvas.getContext('webgl') as WebGLRenderingContext | null;
+    if (!gl) {
+      console.error('WebGL not supported');
+      return;
+    }
+
+    glRef.current = gl;
+
+    // Create shaders
+    const vertexShaderObj = gl.createShader(gl.VERTEX_SHADER);
+    const fragmentShaderObj = gl.createShader(gl.FRAGMENT_SHADER);
+
+    if (!vertexShaderObj || !fragmentShaderObj) {
+      console.error('Failed to create shaders');
+      return;
+    }
+
+    gl.shaderSource(vertexShaderObj, vertexShader);
+    gl.shaderSource(fragmentShaderObj, fragmentShader);
+
+    gl.compileShader(vertexShaderObj);
+    gl.compileShader(fragmentShaderObj);
+
+    // Check for shader compilation errors
+    if (!gl.getShaderParameter(vertexShaderObj, gl.COMPILE_STATUS)) {
+      console.error('Vertex shader compilation error:', gl.getShaderInfoLog(vertexShaderObj));
+      return;
+    }
+    if (!gl.getShaderParameter(fragmentShaderObj, gl.COMPILE_STATUS)) {
+      console.error('Fragment shader compilation error:', gl.getShaderInfoLog(fragmentShaderObj));
+      return;
+    }
+
+    // Create program
+    const program = gl.createProgram();
+    if (!program) {
+      console.error('Failed to create program');
+      return;
+    }
+
+    gl.attachShader(program, vertexShaderObj);
+    gl.attachShader(program, fragmentShaderObj);
+    gl.linkProgram(program);
+
+    // Check for program linking errors
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.error('Program linking error:', gl.getProgramInfoLog(program));
+      return;
+    }
+
+    // Get uniforms
+    const uniforms = {
+      u_time: gl.getUniformLocation(program, 'u_time'),
+      u_ratio: gl.getUniformLocation(program, 'u_ratio'),
+      u_pointer_position: gl.getUniformLocation(program, 'u_pointer_position'),
+      u_scroll_progress: gl.getUniformLocation(program, 'u_scroll_progress'),
+    };
+
+    uniformsRef.current = uniforms;
+
+    // Set up geometry
+    const vertices = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+    const positionLocation = gl.getAttribLocation(program, 'a_position');
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+    gl.useProgram(program);
+
+    // Initial resize
+    const resizeCanvas = () => {
+      const dpr = Math.min(window.devicePixelRatio, 2);
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      if (uniforms.u_ratio) {
+        gl.uniform1f(uniforms.u_ratio, canvas.width / canvas.height);
+      }
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Animation loop
+    let animationFrameId: number;
+    const animate = () => {
+      if (!gl || !uniformsRef.current) return;
+
+      const currentTime = performance.now();
+      pointer.x += (pointer.tX - pointer.x) * 0.2;
+      pointer.y += (pointer.tY - pointer.y) * 0.2;
+
+      if (uniformsRef.current.u_time) {
+        gl.uniform1f(uniformsRef.current.u_time, currentTime);
+      }
+      if (uniformsRef.current.u_pointer_position) {
+        gl.uniform2f(
+          uniformsRef.current.u_pointer_position,
+          pointer.x / window.innerWidth,
+          1 - pointer.y / window.innerHeight
+        );
+      }
+      if (uniformsRef.current.u_scroll_progress) {
+        gl.uniform1f(
+          uniformsRef.current.u_scroll_progress,
+          window.pageYOffset / (2 * window.innerHeight)
+        );
+      }
+
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    // Event listeners
+    const updatePointer = (x: number, y: number) => {
+      setPointer(prev => ({ ...prev, tX: x, tY: y }));
+    };
+
+    window.addEventListener('pointermove', (e) => updatePointer(e.clientX, e.clientY));
+    window.addEventListener('touchmove', (e) => updatePointer(e.touches[0].clientX, e.touches[0].clientY));
+    window.addEventListener('click', (e) => updatePointer(e.clientX, e.clientY));
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
   // Continuous right-to-left scroll
   useEffect(() => {
@@ -269,111 +485,106 @@ const Services: React.FC = () => {
   const totalWidth = (CARD_WIDTH + CARD_GAP) * services.length;
 
   return (
-    <section className="py-15 w-full min-h-[400px] z-0" style={{ background: 'linear-gradient(90deg, #0e254a 0%, #279ac4 60%, #ff5e00 100%)', contain: 'layout paint', backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
-      <div className="container mx-auto px-1" style={{ paddingTop: '2.5rem', paddingBottom: '2.5rem' }}>
+    <section id="services" className="py-15 w-full min-h-[400px] z-0 relative scroll-mt-20" style={{ background: 'linear-gradient(90deg, #0e254a 0%, #279ac4 60%, #ff5e00 100%)', contain: 'layout paint', backfaceVisibility: 'hidden', transform: 'translateZ(0)' }}>
+      <canvas
+        ref={canvasRef}
+        id="neuro"
+        className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-95"
+      />
+      <div className="container mx-auto px-4 py-12 max-w-[1200px]">
+        {/* Heading */}
         <div className="text-center mb-12">
           <span className="inline-flex items-center justify-center gap-2 mb-2 pb-3 font-bold tracking-wide text-[#0e254a] text-lg">
             <span className="w-2 h-2 rounded-full bg-[#0e254a] inline-block"></span>
             <span className="text-[#0e254a] text-lg font-bold">Our Services</span>
           </span>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 font-serif leading-tight">
-            Expert consulting tailored to<br className="hidden md:block" />
-            your business success
+            Comprehensive Solutions for<br className="hidden md:block" />
+            Your Business Growth
           </h2>
         </div>
-        <div
-          className="relative overflow-x-hidden overflow-y-hidden"
-          onMouseLeave={() => setDragging(false)}
+
+        {/* Sliding Cards Container */}
+        <div 
+          ref={containerRef}
+          className="relative w-full overflow-hidden"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
         >
-          {/* Arrow buttons */}
-          <button
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 rounded-full shadow p-2 hover:bg-[#279ac4] hover:text-white transition hidden sm:block"
-            onClick={() => scrollBy(-1)}
-            aria-label="Scroll left"
-            style={{ left: 8 }}
-          >
-            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" /></svg>
-          </button>
-          <button
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 rounded-full shadow p-2 hover:bg-[#279ac4] hover:text-white transition hidden sm:block"
-            onClick={() => scrollBy(1)}
-            aria-label="Scroll right"
-            style={{ right: 8 }}
-          >
-            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
-          </button>
-          <div
-            ref={containerRef}
-            className="flex items-stretch select-none cursor-grab active:cursor-grabbing overflow-x-hidden overflow-y-hidden scrollbar-none"
-            style={{
-              width: '100%',
-              minHeight: CARD_HEIGHT,
-              userSelect: dragging ? 'none' : 'auto',
-              touchAction: 'pan-y',
-              justifyContent: 'center',
+          <div 
+            className="flex gap-4 transition-transform duration-300 ease-out"
+            style={{ 
+              transform: `translateX(-${scrollX}px)`,
+              width: `${totalWidth}px`
             }}
-            onMouseDown={onMouseDown}
-            onMouseMove={onMouseMove}
-            onMouseUp={onMouseUp}
-            onMouseLeave={onMouseUp}
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-            tabIndex={0}
-            role="list"
-            aria-label="Service cards carousel"
           >
-            {displayCards.map((card, i) => {
-              // Calculate position for infinite scroll
-              const baseOffset = i * (CARD_WIDTH + CARD_GAP);
-              let x = baseOffset - scrollX;
-              // Wrap cards for infinite effect
-              if (x < -((CARD_WIDTH + CARD_GAP) * services.length) / 2) x += (CARD_WIDTH + CARD_GAP) * services.length * 2;
-              if (x > ((CARD_WIDTH + CARD_GAP) * services.length) / 2) x -= (CARD_WIDTH + CARD_GAP) * services.length * 2;
-              // Center card detection
-              const center = Math.floor(cardsToShow / 2);
-              const isCenter = Math.abs(x) < (CARD_WIDTH + CARD_GAP) / 2;
-              // New: Hide cards that are far in the background (outside visible area)
-              const visibleRange = ((CARD_WIDTH + CARD_GAP) * cardsToShow) / 2 + 40; // 40px buffer
-              const isVisible = Math.abs(x) < visibleRange;
-              return (
-                <motion.div
-                  key={card.title + i}
-                  className="relative flex-shrink-0"
-                  style={{
-                    width: CARD_WIDTH,
-                    height: CARD_HEIGHT,
-                    marginRight: i !== displayCards.length - 1 ? CARD_GAP : 0,
-                    zIndex: isCenter ? 2 : 1,
-                  }}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  animate={{
-                    x,
-                    scale: isCenter ? 1.09 : 1,
-                    opacity: isVisible ? (isCenter ? 1 : 0.7) : 0,
-                    filter: 'none',
-                    boxShadow: isCenter ? '0 0 0 2px #fff, 0 0 8px 2px #ff5e00, 0 0 18px 8px #279ac4, 0 0 32px 12px #0e254a' : undefined,
-                  }}
-                  transition={{ type: 'spring', stiffness: 120, damping: 18 }}
-                  onMouseEnter={() => { setIsHovered(true); setActiveIdx(i % services.length); }}
-                  onMouseLeave={() => { setIsHovered(false); setActiveIdx(null); }}
-                  onTouchStart={() => { setIsHovered(true); setActiveIdx(i % services.length); }}
-                  onTouchEnd={() => { setIsHovered(false); setActiveIdx(null); }}
-                  tabIndex={0}
-                  role="listitem"
-                  aria-label={card.title}
-                >
-                  <div className="bg-white rounded-2xl p-8 h-full flex flex-col justify-center items-center transition-all duration-300 shadow-lg border border-[#e5e7eb]">
-                    <div className="mb-4">{card.icon}</div>
-                    <div className="text-2xl font-extrabold text-[#0e254a] mb-2 text-center">{card.title}</div>
-                    <div className="text-[#10163a] text-center text-sm font-normal leading-relaxed tracking-normal">{card.description}</div>
+            {displayCards.map((service, idx) => (
+              <motion.div
+                key={idx}
+                className="flex-shrink-0 rounded-2xl overflow-hidden shadow-xl transition-all duration-300 bg-gradient-to-br from-[#0e254a] via-[#10163a] to-[#279ac4] group border border-[#1a233a]/60"
+                style={{ width: CARD_WIDTH, height: CARD_HEIGHT, minHeight: 280, maxHeight: 400 }}
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+              >
+                <div className="p-6 md:p-8 flex flex-col h-full relative">
+                  {/* Icon container */}
+                  <div className="mb-6 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center bg-[#10163a] border-2 border-[#279ac4] shadow-lg">
+                      {service.icon}
+                    </div>
                   </div>
-                </motion.div>
-              );
-            })}
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">
+                      {service.title}
+                    </h3>
+                    <p className="text-[#e5e7eb] text-base leading-relaxed mb-2">
+                      {service.description}
+                    </p>
+                  </div>
+                  {/* Bottom accent */}
+                  <div className="mt-auto pt-4">
+                    <div className="flex items-center text-[#FFA500] font-medium gap-2">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span>Premium Service</span>
+                    </div>
+                  </div>
+                  {/* Overlay for vignette effect - less opaque */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+                </div>
+              </motion.div>
+            ))}
           </div>
+        </div>
+
+        {/* Navigation Arrows */}
+        <div className="flex justify-center gap-4 mt-8">
+          <button
+            onClick={() => scrollBy(1)}
+            className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+            aria-label="Previous services"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            onClick={() => scrollBy(-1)}
+            className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+            aria-label="Next services"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
       </div>
     </section>

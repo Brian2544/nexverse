@@ -483,8 +483,8 @@ const GovernanceEnterpriseIT: React.FC = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+  </div>
+);
 };
 
 export default GovernanceEnterpriseIT; 

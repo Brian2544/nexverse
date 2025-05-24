@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Hero from './components/sections/Hero';
 import WhyNexverse from './components/sections/WhyNexverse';
@@ -14,6 +14,8 @@ import Testimonials from './components/sections/Testimonials';
 import Contact from './components/sections/Contact';
 import Footer from './components/layout/Footer';
 import ChatWidget from './components/common/ChatWidget';
+import ContactModal from './components/modals/ContactModal';
+import ScrollToHashElement from './components/common/ScrollToHashElement';
 // Import all generated pages
 import StrategyConsulting from './components/sections/pages/StrategyConsulting';
 import TechnologyConsulting from './components/sections/pages/TechnologyConsulting';
@@ -34,14 +36,42 @@ import OurCoreValues from './components/sections/pages/OurCoreValues';
 
 
 const App: React.FC = () => {
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
+  const getInTouchBtnRef = useRef<HTMLButtonElement>(null);
+  const location = useLocation();
+
+  const openContactModal = useCallback((anchorRect?: DOMRect | null) => {
+    if (anchorRect) setButtonRect(anchorRect);
+    else setButtonRect(null);
+    setIsContactModalOpen(true);
+  }, []);
+
+  // Handle scrollTo state when navigating from other pages
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const element = document.getElementById(location.state.scrollTo);
+      if (element) {
+        // Add a small delay to ensure the element is rendered
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+  }, [location]);
+
   return (
     <div className="min-h-screen relative">
-      <Navbar />
+      <ScrollToHashElement />
+      <Navbar 
+        openContactModal={openContactModal}
+        getInTouchBtnRef={getInTouchBtnRef}
+      />
       <main>
         <Routes>
           <Route path="/" element={
             <>
-              <Hero />
+              <Hero openContactModal={openContactModal} />
               <WhyNexverse />
               <Impact />
               <About />
@@ -76,8 +106,14 @@ const App: React.FC = () => {
       </main>
       <Footer />
       <ChatWidget />
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+        anchorRect={buttonRect}
+        source="process"
+      />
     </div>
   );
 };
 
-export default App; 
+export default App;

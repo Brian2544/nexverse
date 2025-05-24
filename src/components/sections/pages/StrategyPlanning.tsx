@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import OptimizedImage from '../../common/OptimizedImage';
+import ImageWithFallback from '../../common/ImageWithFallback';
 import { 
   ChartBarIcon, 
   LightBulbIcon, 
@@ -146,11 +147,61 @@ const StrategyPlanning: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Impact Section */}
+      <section className="py-20">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <div className="mb-4 text-[#009FE3] font-semibold text-lg">• Impact</div>
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4">Real results that drive lasting impact for everyone</h2>
+          <p className="text-lg text-gray-600 mb-12">We deliver tailored strategies, innovative solutions, and dedicated support to drive lasting growth</p>
+        </div>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-12 max-w-5xl mx-auto">
+          {/* Left Stats */}
+          <div className="flex flex-col gap-8">
+            <div className="flex items-center gap-4">
+              <span className="bg-gradient-to-r from-[#009FE3] to-yellow-400 text-white font-bold px-5 py-2 rounded-full text-lg shadow">$7M+</span>
+              <span className="text-gray-700 font-medium text-lg">Revenue</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="bg-gradient-to-r from-[#009FE3] to-yellow-400 text-white font-bold px-5 py-2 rounded-full text-lg shadow">72%</span>
+              <span className="text-gray-700 font-medium text-lg">Growth</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="bg-gradient-to-r from-[#009FE3] to-yellow-400 text-white font-bold px-5 py-2 rounded-full text-lg shadow">65%</span>
+              <span className="text-gray-700 font-medium text-lg">Skills</span>
+            </div>
+          </div>
+          {/* Profile Image */}
+          <div className="flex-shrink-0">
+            <ImageWithFallback
+              src="/images/impact/profile.jpg"
+              alt="Impact Profile"
+              className="w-64 h-64 object-cover rounded-3xl shadow-lg border-4 border-white"
+              priority
+            />
+          </div>
+          {/* Right Stats */}
+          <div className="flex flex-col gap-8">
+            <div className="flex items-center gap-4 flex-row-reverse md:flex-row">
+              <span className="bg-gradient-to-r from-[#009FE3] to-yellow-400 text-white font-bold px-5 py-2 rounded-full text-lg shadow">78%</span>
+              <span className="text-gray-700 font-medium text-lg">Impact</span>
+            </div>
+            <div className="flex items-center gap-4 flex-row-reverse md:flex-row">
+              <span className="bg-gradient-to-r from-[#009FE3] to-yellow-400 text-white font-bold px-5 py-2 rounded-full text-lg shadow">1%</span>
+              <span className="text-gray-700 font-medium text-lg">Designers</span>
+            </div>
+            <div className="flex items-center gap-4 flex-row-reverse md:flex-row">
+              <span className="bg-gradient-to-r from-[#009FE3] to-yellow-400 text-white font-bold px-5 py-2 rounded-full text-lg shadow">10+</span>
+              <span className="text-gray-700 font-medium text-lg">Consultants</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <OptimizedImage
-            src="/images/strategy-planning-hero.jpg"
+          <ImageWithFallback
+            src="/images/hero/strategy-planning-hero.jpg"
             alt="Strategy Planning"
             className="w-full h-full object-cover"
             priority
@@ -280,7 +331,7 @@ const StrategyPlanning: React.FC = () => {
                 whileHover={{ y: -5 }}
               >
                 <div className="relative h-48">
-                  <OptimizedImage
+                  <ImageWithFallback
                     src={industry.image}
                     alt={industry.name}
                     className="object-cover"
@@ -339,7 +390,7 @@ const StrategyPlanning: React.FC = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className="relative h-64">
-                  <OptimizedImage
+                  <ImageWithFallback
                     src={transformation.image}
                     alt={transformation.title}
                     className="object-cover"

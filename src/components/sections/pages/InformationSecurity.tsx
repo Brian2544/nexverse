@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import OptimizedImage from '../../common/OptimizedImage';
+import ImageWithFallback from '../../common/ImageWithFallback';
 import { 
   ShieldCheckIcon, 
   LockClosedIcon, 
@@ -174,8 +174,8 @@ const InformationSecurity: React.FC = () => {
       {/* Hero Section */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <OptimizedImage
-            src="/images/info-security-hero.jpg"
+          <ImageWithFallback
+            src="/images/hero/info-security-hero.jpg"
             alt="Information Security"
             className="w-full h-full object-cover"
             priority
@@ -262,7 +262,7 @@ const InformationSecurity: React.FC = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className="w-16 h-16 mx-auto mb-4 relative">
-                  <OptimizedImage
+                  <ImageWithFallback
                     src={badge.icon}
                     alt={badge.name}
                     className="object-contain"
@@ -417,8 +417,8 @@ const InformationSecurity: React.FC = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+  </div>
+);
 };
 
 export default InformationSecurity; 

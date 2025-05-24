@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDownIcon, Bars3Icon, XMarkIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { NavLink, useLocation } from 'react-router-dom';
-import ContactModal from '../modals/ContactModal';
 
 // Memoize navLinks to prevent unnecessary re-renders
 const navLinks = [
@@ -153,13 +152,10 @@ function useOnClickOutside(ref: any, handler: () => void) {
   }, [ref, handler]);
 }
 
-const Navbar: React.FC = () => {
+const Navbar: React.FC<{ openContactModal: (anchorRect?: DOMRect | null) => void, getInTouchBtnRef: React.RefObject<HTMLButtonElement> }> = ({ openContactModal, getInTouchBtnRef }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-  const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
   const location = useLocation();
-  const getInTouchBtnRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Memoize scroll handler
@@ -203,12 +199,13 @@ const Navbar: React.FC = () => {
   );
 
   // Memoize contact modal open handler
-  const openContactModal = useCallback(() => {
+  const handleOpenContactModal = useCallback(() => {
     if (getInTouchBtnRef.current) {
-      setButtonRect(getInTouchBtnRef.current.getBoundingClientRect());
+      openContactModal(getInTouchBtnRef.current.getBoundingClientRect());
+    } else {
+      openContactModal();
     }
-    setIsContactModalOpen(true);
-  }, []);
+  }, [openContactModal, getInTouchBtnRef]);
 
   return (
     <nav className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'}`}>
@@ -247,7 +244,7 @@ const Navbar: React.FC = () => {
           >
             <button
               ref={getInTouchBtnRef}
-              onClick={openContactModal}
+              onClick={handleOpenContactModal}
               className="group flex items-center px-3 py-1.5 rounded-full font-bold bg-gradient-to-r from-[#009FE3] to-[#FFA500] text-white shadow transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#009FE3]/40 text-sm min-w-[90px] max-w-[150px]"
               aria-label="Get in Touch"
               style={{ whiteSpace: 'nowrap' }}
@@ -262,14 +259,14 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="lg:hidden text-[#10163a] hover:text-[#009FE3] focus:outline-none p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className="lg:hidden text-[#10163a] hover:text-[#009FE3] focus:outline-none p-3 rounded-full border border-[#e5e7eb] bg-white shadow-md transition-colors focus:ring-2 focus:ring-[#009FE3] focus:ring-offset-2"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         >
           {mobileOpen ? (
-            <XMarkIcon className="w-8 h-8" />
+            <XMarkIcon className="w-9 h-9" />
           ) : (
-            <Bars3Icon className="w-8 h-8" />
+            <Bars3Icon className="w-9 h-9" />
           )}
         </button>
       </div>
@@ -284,7 +281,7 @@ const Navbar: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999]"
               onClick={() => setMobileOpen(false)}
             />
             {/* Modal */}
@@ -294,32 +291,32 @@ const Navbar: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: '100%' }}
               transition={{ type: 'spring', duration: 0.5 }}
-              className="fixed right-0 top-0 z-[101] w-[85vw] h-full bg-white shadow-2xl overflow-hidden flex flex-col"
+              className="fixed right-0 top-0 z-[9999] w-full sm:w-[85vw] h-full bg-white shadow-2xl overflow-hidden flex flex-col rounded-l-3xl border-l border-[#e5e7eb]"
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b">
+              <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
                 <NexverseLogo />
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="text-gray-400 hover:text-[#009FE3] transition-colors p-2 rounded-lg hover:bg-gray-100"
+                  className="text-gray-400 hover:text-[#009FE3] transition-colors p-3 rounded-full border border-[#e5e7eb] bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-[#009FE3] focus:ring-offset-2"
                   aria-label="Close menu"
                 >
-                  <XMarkIcon className="w-8 h-8" />
+                  <XMarkIcon className="w-9 h-9" />
                 </button>
               </div>
 
               {/* Nav Links */}
-              <div className="flex-1 overflow-y-auto py-6">
+              <div className="flex-1 overflow-y-auto py-8">
                 {navLinks.map((item) => (
-                  <div key={item.label} className="px-6 py-3">
-                    <div className="font-semibold text-[#10163a] text-lg mb-3">{item.label}</div>
-                    <div className="pl-4 space-y-3">
+                  <div key={item.label} className="px-7 py-4">
+                    <div className="font-semibold text-[#10163a] text-lg mb-4">{item.label}</div>
+                    <div className="pl-4 space-y-4">
                       {item.children.map((child) => (
                         <MemoizedNavLink
                           key={child.label}
                           to={child.href}
                           className={({ isActive }) =>
-                            `block py-2 text-base rounded-lg transition-colors ${
+                            `block py-3 text-base rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#009FE3] focus:ring-offset-2 ${
                               isActive
                                 ? 'text-[#009FE3] bg-[#009fe30a]'
                                 : 'text-[#10163a] hover:text-[#009FE3] hover:bg-gray-100/10'
@@ -336,29 +333,22 @@ const Navbar: React.FC = () => {
               </div>
 
               {/* Footer */}
-              <div className="p-6 border-t">
+              <div className="p-7 border-t">
                 <button
                   onClick={() => {
                     setMobileOpen(false);
-                    openContactModal();
+                    handleOpenContactModal();
                   }}
-                  className="w-full flex items-center justify-center px-6 py-3 rounded-full font-bold bg-gradient-to-r from-[#009FE3] to-[#FFA500] text-white shadow-lg transition-all duration-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#009FE3]/40"
+                  className="w-full flex items-center justify-center px-7 py-4 rounded-full font-bold bg-gradient-to-r from-[#009FE3] to-[#FFA500] text-white shadow-lg transition-all duration-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#009FE3]/40 focus:ring-offset-2 text-base"
                 >
                   <span className="mr-2">Get in touch</span>
-                  <ArrowRightIcon className="w-5 h-5" />
+                  <ArrowRightIcon className="w-6 h-6" />
                 </button>
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
-
-      {/* Contact Modal */}
-      <ContactModal
-        isOpen={isContactModalOpen}
-        onClose={() => setIsContactModalOpen(false)}
-        anchorRect={buttonRect}
-      />
     </nav>
   );
 };
