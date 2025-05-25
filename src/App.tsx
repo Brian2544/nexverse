@@ -83,9 +83,9 @@ const App: React.FC = () => {
             </>
           } />
           {/* Consulting Services */}
-          <Route path="/services/strategy-consulting" element={<StrategyConsulting />} />
-          <Route path="/services/technology-consulting" element={<TechnologyConsulting />} />
-          <Route path="/services/business-consulting" element={<BusinessConsulting />} />
+          <Route path="/services/strategy-consulting" element={<StrategyConsulting openContactModal={openContactModal} />} />
+          <Route path="/services/technology-consulting" element={<TechnologyConsulting openContactModal={openContactModal} />} />
+          <Route path="/services/business-consulting" element={<BusinessConsulting openContactModal={openContactModal} />} />
           {/* Corporate Solutions */}
           <Route path="/solutions/it-infrastructure" element={<ITInfrastructure />} />
           <Route path="/solutions/web-development" element={<WebDevelopment />} />

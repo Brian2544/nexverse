@@ -1,8 +1,121 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import OptimizedImage from '../../common/OptimizedImage';
 
+const flowData = [
+  {
+    title: 'Simple Booking',
+    image: '/assets/images/office.jpg',
+    alt: 'Simple Booking',
+    short: `At the heart of our consultancy agency lies a bold and ambitious vision: to be the leading partner for consulting services. We are committed to offering exceptional solutions that not only solve today's challenges but also position organizations for long-term success. Through a personalized, client-focused approach, we guide institutions across industries toward measurable improvements.`,
+    full: `At the heart of our consultancy agency lies a bold and ambitious vision: to be the leading partner for consulting services. We are committed to offering exceptional solutions that not only solve today's challenges but also position organizations for long-term success. Through a personalized, client-focused approach, we guide institutions across industries toward measurable improvements. Our team believes that transformative consulting is not just about processes—it's about empowering people. With every strategy we implement, we aim to unlock the potential of individuals and teams. By doing so, we bring our clients closer to their goals while cultivating a culture of continuous improvement.`
+  },
+  {
+    title: 'Tailored Strategy',
+    image: '/assets/images/strategy.jpg',
+    alt: 'Tailored Strategy',
+    short: `We envision a future where businesses thrive through innovation, collaboration, and resilience—fueled by expert consulting support. Our mission is to drive efficiency within organizations, ensuring that every resource is optimized and every process refined. Whether it's through digital transformation, operational audits, or leadership training, our services are designed to create meaningful impact.`,
+    full: `We envision a future where businesses thrive through innovation, collaboration, and resilience—fueled by expert consulting support. Our mission is to drive efficiency within organizations, ensuring that every resource is optimized and every process refined. Whether it's through digital transformation, operational audits, or leadership training, our services are designed to create meaningful impact. We work side by side with decision-makers, offering insights backed by data and industry expertise. Each project we take on is a step toward our greater goal of being the trusted catalyst for change. As we help organizations grow, we ensure their people grow with them.`
+  },
+  {
+    title: 'Seamless Execution',
+    image: '/assets/images/project_management.jpg',
+    alt: 'Seamless Execution',
+    short: `Transformation is at the core of everything we do. We believe that by challenging the status quo and embracing strategic change, companies can redefine what's possible. Our consulting practice focuses on enabling this transformation through carefully crafted solutions tailored to each client's unique context.`,
+    full: `Transformation is at the core of everything we do. We believe that by challenging the status quo and embracing strategic change, companies can redefine what's possible. Our consulting practice focuses on enabling this transformation through carefully crafted solutions tailored to each client's unique context. We bring clarity to complexity and structure to chaos, helping businesses find direction and achieve sustainable success. Beyond business performance, our vision extends to enriching the lives and aspirations of people within those organizations. We measure our success not just by results, but by the positive, lasting change we leave behind.`
+  },
+  {
+    title: 'Continuous Support',
+    image: '/assets/images/support.jpg',
+    alt: 'Continuous Support',
+    short: `To become the leading partner in consulting, we continuously invest in innovation, professional development, and client relationships. Our consultants are equipped with cutting-edge tools and frameworks that enable them to respond to dynamic business environments. Each engagement is approached with integrity, empathy, and a relentless drive for excellence.`,
+    full: `To become the leading partner in consulting, we continuously invest in innovation, professional development, and client relationships. Our consultants are equipped with cutting-edge tools and frameworks that enable them to respond to dynamic business environments. Each engagement is approached with integrity, empathy, and a relentless drive for excellence. We believe that a well-supported team can spark transformative ideas, and that organizations flourish when their people are empowered. That's why we prioritize not only business metrics but also individual growth, employee well-being, and organizational culture. This human-centered philosophy is what sets us apart in the consulting landscape.`
+  }
+];
+
+const brandColors = ['#2B2A7F', '#F9B233', '#009FE3']; // deep blue, orange, light blue
+
+function splitToBullets(text: string): string[] {
+  // Split by period, question mark, or exclamation mark followed by space or end of string
+  return text.match(/[^.!?]+[.!?]+(\s|$)/g)?.map(s => s.trim()).filter(Boolean) || [text];
+}
+
+// Add ModalProps type
+interface ModalProps {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  content: string;
+}
+
+const Modal = ({ open, onClose, title, content }: ModalProps) => {
+  if (!open) return null;
+  const bullets = splitToBullets(content);
+  // Close modal on outside click
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-2"
+      aria-modal="true"
+      role="dialog"
+      tabIndex={-1}
+      onClick={handleBackdropClick}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.95, opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="bg-white rounded-2xl shadow-2xl w-full max-w-md sm:max-w-lg p-4 sm:p-6 relative border-2 border-[#009FE3] max-h-[80vh] overflow-y-auto"
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-400 hover:text-[#009FE3] focus:outline-none focus:ring-2 focus:ring-[#009FE3] rounded-full p-1"
+          aria-label="Close modal"
+        >
+          <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <h2 className="text-lg sm:text-xl font-bold text-[#009FE3] mb-3 text-center">{title}</h2>
+        <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base">
+          {bullets.map((b, i) => (
+            <li key={i} className="flex items-start gap-2 sm:gap-3">
+              <span
+                className="mt-1 inline-block w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full flex-shrink-0"
+                style={{ background: brandColors[i % brandColors.length] }}
+                aria-hidden
+              ></span>
+              <span className="text-gray-700 leading-relaxed">{b}</span>
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// Carousel images for About NexVerse
+const aboutImages = [
+  {
+    src: '/assets/images/strategy.jpg',
+    alt: 'Strategy Meeting',
+  },
+  {
+    src: '/assets/images/office.jpg',
+    alt: 'Office Boardroom',
+  },
+  {
+    src: '/assets/images/project_management.jpg',
+    alt: 'Project Management',
+  },
+];
+
 const OurVision: React.FC = () => {
+  const [modal, setModal] = useState({ open: false, title: '', content: '' });
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
@@ -18,7 +131,6 @@ const OurVision: React.FC = () => {
           alt="Vision Hero"
           className="w-full h-full object-cover"
           loading="eager"
-          sizes="100vw"
           quality={90}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50 flex items-center">
@@ -40,58 +152,52 @@ const OurVision: React.FC = () => {
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto text-center mb-16"
-          >
-            <h2 className="text-3xl font-bold text-[#009FE3] mb-6">About NexVerse</h2>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              NexVerse Consulting Group comprises of a team of highly skilled professionals who are dedicated to providing effective Consulting Solutions for Small and Medium-sized Enterprises, as well as Corporate Organizations in the region. The team at NexVerse has many years of combined experience in assisting organizations realize operational efficiency and competitive advantage.
-            </p>
-          </motion.div>
-
-          {/* Vision Images Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {[1, 2, 3].map((num) => (
-              <motion.div
-                key={num}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: num * 0.1 }}
-                className="relative h-64 rounded-2xl overflow-hidden shadow-xl"
+      {/* Flow Section */}
+      <section className="relative py-12 bg-white">
+        <div className="container mx-auto px-2 md:px-4">
+          <div className="relative flex flex-col gap-10 md:gap-16">
+            {flowData.map((item, idx) => (
+              <div
+                key={item.title}
+                className={`flex flex-col ${idx % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'} items-stretch gap-0 md:gap-0 bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100`}
+                style={{ minHeight: '200px', maxHeight: '320px' }}
               >
-                <OptimizedImage
-                  src={`/assets/images/our_vision${num}.jpg`}
-                  alt={`Vision ${num}`}
-                  className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  quality={85}
-                />
-              </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: idx % 2 === 1 ? 40 : -40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7 }}
+                  whileHover={{ scale: 1.03, boxShadow: '0 4px 16px 0 rgba(43,42,127,0.12)' }}
+                  className={`w-full md:w-2/5 flex items-center justify-center bg-gray-50 ${idx % 2 === 0 ? 'rounded-tl-2xl rounded-br-2xl' : 'rounded-tr-2xl rounded-bl-2xl'}`}
+                  style={{ minHeight: '200px', maxHeight: '320px' }}
+                >
+                  <OptimizedImage
+                    src={item.image}
+                    alt={item.alt}
+                    className="w-full h-full object-cover transition-transform duration-300 rounded-[inherit]"
+                    loading="lazy"
+                    quality={85}
+                  />
+                </motion.div>
+                <div className="w-full md:w-3/5 flex flex-col justify-center px-4 py-6 md:py-0 md:px-8" style={{ minHeight: '200px' }}>
+                  <div className="flex items-center mb-1">
+                    <span className="bg-[#009FE3] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 text-base shadow-md">{(idx+1).toString().padStart(2, '0')}</span>
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900">{item.title}</h3>
+                  </div>
+                  <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-4 font-medium">{item.short}</p>
+                  <button
+                    onClick={() => setModal({ open: true, title: item.title, content: item.full })}
+                    className="text-[#009FE3] font-semibold text-base flex items-center gap-1 hover:underline focus:outline-none focus:ring-2 focus:ring-[#009FE3] rounded transition-colors"
+                    aria-label={`Discover more about ${item.title}`}
+                  >
+                    Discover More <span aria-hidden>→</span>
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
-
-          {/* Commitment Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto text-center"
-          >
-            <p className="text-lg text-gray-700 leading-relaxed">
-              At NexVerse, we endeavor to create long-term partnerships with organizations, with clear value propositions in offering solutions that enable organizations achieve long-term strategic objectives. We specialize in business and technology strategy consulting, and business transformational solutions for all industries. We incorporate organizational coaching and corporate trainings to ensure continuous business efficiency in all organizational levels. We deliver the highest quality services for today, and for tomorrow.
-            </p>
-          </motion.div>
         </div>
+        <Modal open={modal.open} onClose={() => setModal({ open: false, title: '', content: '' })} title={modal.title} content={modal.content} />
       </section>
     </div>
   );
