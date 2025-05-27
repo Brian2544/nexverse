@@ -61,57 +61,59 @@ const App: React.FC = () => {
   }, [location]);
 
   return (
-    <div className="min-h-screen relative">
-      <ScrollToHashElement />
+    <div className="min-h-screen relative bg-[#e0f2f1]">
       <Navbar 
         openContactModal={openContactModal}
         getInTouchBtnRef={getInTouchBtnRef}
       />
-      <main>
-        <Routes>
-          <Route path="/" element={
-            <>
-              <Hero openContactModal={openContactModal} />
-              <WhyNexverse />
-              <Impact />
-              <About />
-              <Services />
-              <Process />
-              <Features />
-              <FAQ />
-              <Contact />
-            </>
-          } />
-          {/* Consulting Services */}
-          <Route path="/services/strategy-consulting" element={<StrategyConsulting openContactModal={openContactModal} />} />
-          <Route path="/services/technology-consulting" element={<TechnologyConsulting openContactModal={openContactModal} />} />
-          <Route path="/services/business-consulting" element={<BusinessConsulting openContactModal={openContactModal} />} />
-          {/* Corporate Solutions */}
-          <Route path="/solutions/it-infrastructure" element={<ITInfrastructure />} />
-          <Route path="/solutions/web-development" element={<WebDevelopment />} />
-          <Route path="/solutions/information-security" element={<InformationSecurity />} />
-          <Route path="/solutions/business-applications" element={<BusinessApplications />} />
-          <Route path="/solutions/it-service-management" element={<ITServiceManagement />} />
-          {/* Corporate Training & Coaching */}
-          <Route path="/training/strategy-planning" element={<StrategyPlanning />} />
-          <Route path="/training/governance-enterprise-it" element={<GovernanceEnterpriseIT />} />
-          <Route path="/training/digital-transformation" element={<DigitalTransformation />} />
-          <Route path="/training/project-management" element={<ProjectManagement />} />
-          <Route path="/training/data-protection" element={<DataProtection />} />
-          {/* About Us */}
-          <Route path="/about/our-vision" element={<OurVision />} />
-          <Route path="/about/our-mission" element={<OurMission />} />
-          <Route path="/about/our-core-values" element={<OurCoreValues />} />
-        </Routes>
-      </main>
-      <Footer />
-      <ChatWidget />
-      <ContactModal
-        isOpen={isContactModalOpen}
-        onClose={() => setIsContactModalOpen(false)}
-        anchorRect={buttonRect}
-        source="process"
-      />
+      <div className="max-w-7xl mx-auto">
+        <ScrollToHashElement />
+        <main>
+          <Routes>
+            <Route path="/" element={
+              <>
+                <Hero openContactModal={openContactModal} />
+                <WhyNexverse />
+                <Impact />
+                <About />
+                <Services />
+                <Process />
+                <Features />
+                <FAQ />
+                <Contact />
+              </>
+            } />
+            {/* Consulting Services */}
+            <Route path="/services/strategy-consulting" element={<StrategyConsulting openContactModal={openContactModal} />} />
+            <Route path="/services/technology-consulting" element={<TechnologyConsulting openContactModal={openContactModal} />} />
+            <Route path="/services/business-consulting" element={<BusinessConsulting openContactModal={openContactModal} />} />
+            {/* Corporate Solutions */}
+            <Route path="/solutions/it-infrastructure" element={<ITInfrastructure openContactModal={openContactModal} />} />
+            <Route path="/solutions/web-development" element={<WebDevelopment openContactModal={openContactModal} />} />
+            <Route path="/solutions/information-security" element={<InformationSecurity openContactModal={openContactModal} />} />
+            <Route path="/solutions/business-applications" element={<BusinessApplications openContactModal={openContactModal} />} />
+            <Route path="/solutions/it-service-management" element={<ITServiceManagement openContactModal={openContactModal} />} />
+            {/* Training */}
+            <Route path="/training/strategy-planning" element={<StrategyPlanning openContactModal={openContactModal} />} />
+            <Route path="/training/governance-enterprise-it" element={<GovernanceEnterpriseIT openContactModal={openContactModal} />} />
+            <Route path="/training/digital-transformation" element={<DigitalTransformation openContactModal={openContactModal} />} />
+            <Route path="/training/project-management" element={<ProjectManagement openContactModal={openContactModal} />} />
+            <Route path="/training/data-protection" element={<DataProtection openContactModal={openContactModal} />} />
+            {/* About Us */}
+            <Route path="/about/our-vision" element={<OurVision openContactModal={openContactModal} />} />
+            <Route path="/about/our-mission" element={<OurMission openContactModal={openContactModal} />} />
+            <Route path="/about/our-core-values" element={<OurCoreValues openContactModal={openContactModal} />} />
+          </Routes>
+        </main>
+        <Footer />
+        <ChatWidget />
+        <ContactModal
+          isOpen={isContactModalOpen}
+          onClose={() => setIsContactModalOpen(false)}
+          anchorRect={buttonRect}
+          source="process"
+        />
+      </div>
     </div>
   );
 };

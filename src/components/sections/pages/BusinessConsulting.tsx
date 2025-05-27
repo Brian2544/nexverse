@@ -81,7 +81,7 @@ const BusinessConsulting: React.FC<BusinessConsultingProps> = ({ openContactModa
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/assets/images/business_hero_video.mp4" type="video/mp4" />
+          <source src="/assets/images/business_application.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-r from-[#232A7D]/90 to-[#009FE3]/60 flex items-center">
           <div className="container mx-auto px-4">

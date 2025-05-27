@@ -14,7 +14,11 @@ import {
   CurrencyDollarIcon
 } from '@heroicons/react/24/outline';
 
-const StrategyPlanning: React.FC = () => {
+interface StrategyPlanningProps {
+  openContactModal: (anchorRect?: DOMRect | null) => void;
+}
+
+const StrategyPlanning: React.FC<StrategyPlanningProps> = ({ openContactModal }) => {
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
@@ -428,6 +432,32 @@ const StrategyPlanning: React.FC = () => {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Main CTA Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            className="text-center mb-16"
+            {...fadeInUp}
+          >
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Ready to Transform Your Business?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Book a free consultation to discuss your specific needs
+            </p>
+          </motion.div>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+            <button
+              className="bg-gradient-to-r from-[#009FE3] to-[#005fa3] font-bold px-8 py-3 rounded-lg shadow hover:bg-gray-100 transition focus:outline-none focus:ring-4 focus:ring-[#FFA500]/40"
+              onClick={() => openContactModal()}
+            >
+              Book My Free Consultation
+            </button>
           </div>
         </div>
       </section>

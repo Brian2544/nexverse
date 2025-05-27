@@ -114,7 +114,11 @@ const aboutImages = [
   },
 ];
 
-const OurVision: React.FC = () => {
+interface OurVisionProps {
+  openContactModal: (anchorRect?: DOMRect | null) => void;
+}
+
+const OurVision: React.FC<OurVisionProps> = ({ openContactModal }) => {
   const [modal, setModal] = useState({ open: false, title: '', content: '' });
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },

@@ -18,7 +18,11 @@ import {
   ClockIcon
 } from '@heroicons/react/24/outline';
 
-const GovernanceEnterpriseIT: React.FC = () => {
+interface GovernanceEnterpriseITProps {
+  openContactModal: (anchorRect?: DOMRect | null) => void;
+}
+
+const GovernanceEnterpriseIT: React.FC<GovernanceEnterpriseITProps> = ({ openContactModal }) => {
   const fadeInUp = {
     initial: { opacity: 0, y: 60 },
     animate: { opacity: 1, y: 0 },
@@ -483,8 +487,17 @@ const GovernanceEnterpriseIT: React.FC = () => {
           </div>
         </div>
       </section>
-  </div>
-);
+
+      <section className="py-12 px-4 bg-gradient-to-r from-[#009FE3] to-[#005fa3] flex flex-col items-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Ready to Optimize Your IT Governance?</h2>
+          <button className="bg-white text-[#009FE3] font-bold px-8 py-3 rounded-lg shadow hover:bg-gray-100 transition" onClick={() => openContactModal()}>
+            Book a Free Governance Consultation
+          </button>
+        </motion.div>
+      </section>
+    </div>
+  );
 };
 
 export default GovernanceEnterpriseIT; 

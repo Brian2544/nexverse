@@ -3,6 +3,10 @@ import { motion } from 'framer-motion';
 import OptimizedImage from '../../common/OptimizedImage';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
+interface OurCoreValuesProps {
+  openContactModal: (anchorRect?: DOMRect | null) => void;
+}
+
 const coreValues = [
   {
     title: 'Respect',
@@ -31,7 +35,7 @@ const coreValues = [
   }
 ];
 
-const OurCoreValues: React.FC = () => {
+const OurCoreValues: React.FC<OurCoreValuesProps> = ({ openContactModal }) => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}

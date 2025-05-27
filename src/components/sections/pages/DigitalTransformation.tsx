@@ -2,7 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import AboutSection from '../AboutSection';
 
-const DigitalTransformation: React.FC = () => {
+interface DigitalTransformationProps {
+  openContactModal: (anchorRect?: DOMRect | null) => void;
+}
+
+const DigitalTransformation: React.FC<DigitalTransformationProps> = ({ openContactModal }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -154,8 +158,8 @@ const DigitalTransformation: React.FC = () => {
           <button className="bg-white text-[#009FE3] font-bold px-8 py-3 rounded-lg shadow hover:bg-gray-100 transition">Book a Free Digital Consultation</button>
         </motion.div>
       </section>
-  </div>
-);
+    </div>
+  );
 };
 
 export default DigitalTransformation; 

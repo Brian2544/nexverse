@@ -4,7 +4,11 @@ import useVanta from '../../../components/common/useVanta';
 import { FaClipboardList, FaDraftingCompass, FaCode, FaRocket } from 'react-icons/fa';
 import AboutSection from '../AboutSection';
 
-const ProjectManagement: React.FC = () => {
+interface ProjectManagementProps {
+  openContactModal: (anchorRect?: DOMRect | null) => void;
+}
+
+const ProjectManagement: React.FC<ProjectManagementProps> = ({ openContactModal }) => {
   const heroRef = useRef(null);
   const haloRef = useRef(null);
   // Layer both WAVES and HALO for a 3D animated effect
@@ -106,8 +110,8 @@ const ProjectManagement: React.FC = () => {
           <button className="bg-white text-[#009FE3] font-bold px-8 py-3 rounded-lg shadow hover:bg-gray-100 transition">Book a Free Project Consultation</button>
         </motion.div>
       </section>
-  </div>
-);
+    </div>
+  );
 };
 
 export default ProjectManagement; 

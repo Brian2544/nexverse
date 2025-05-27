@@ -3,7 +3,11 @@ import { motion } from 'framer-motion';
 import useVanta from '../../../components/common/useVanta';
 import AboutSection from '../AboutSection';
 
-const DataProtection: React.FC = () => {
+interface DataProtectionProps {
+  openContactModal: (anchorRect?: DOMRect | null) => void;
+}
+
+const DataProtection: React.FC<DataProtectionProps> = ({ openContactModal }) => {
   const heroRef = useRef(null);
   useVanta(heroRef, 'HALO', { color: 0x009FE3, amplitudeFactor: 2.6, size: 1.4 });
   const socialProofRef = useRef(null);
@@ -58,8 +62,8 @@ const DataProtection: React.FC = () => {
           <button className="bg-white text-[#009FE3] font-bold px-8 py-3 rounded-lg shadow hover:bg-gray-100 transition">Request a Compliance Review</button>
         </motion.div>
       </section>
-  </div>
-);
+    </div>
+  );
 };
 
 export default DataProtection; 

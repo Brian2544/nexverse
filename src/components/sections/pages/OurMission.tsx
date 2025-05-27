@@ -97,7 +97,11 @@ const Modal = ({ open, onClose, title, content }: ModalProps) => {
   );
 };
 
-const OurMission: React.FC = () => {
+interface OurMissionProps {
+  openContactModal: (anchorRect?: DOMRect | null) => void;
+}
+
+const OurMission: React.FC<OurMissionProps> = ({ openContactModal }) => {
   const [modal, setModal] = useState({ open: false, title: '', content: '' });
 
   return (
