@@ -31,6 +31,7 @@ const GlobeComponent: React.FC = () => {
         onGlobeReady={() => {
           if (globeEl.current) {
             globeEl.current.controls().autoRotate = true;
+            globeEl.current.linesMesh.visible = false;
           }
         }}
       />
