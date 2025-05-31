@@ -484,20 +484,20 @@ const DataProtection: React.FC<DataProtectionProps> = ({ openContactModal }) => 
               {
                 quote: "NexVerse's data protection solutions helped us achieve GDPR compliance and significantly reduce our security risks.",
                 author: "Sarah Johnson",
-                role: "CISO, TechCorp",
-                company: "Enterprise Technology"
+                role: "CISO",
+                company: ""
               },
               {
                 quote: "Their comprehensive approach to security and compliance has been instrumental in our digital transformation journey.",
                 author: "Michael Chen",
                 role: "IT Director",
-                company: "Global Finance"
+                company: ""
               },
               {
                 quote: "The team's expertise in data protection and their proactive approach to security has been invaluable.",
                 author: "Emma Rodriguez",
                 role: "Compliance Officer",
-                company: "Healthcare Plus"
+                company: ""
               }
             ].map((testimonial, index) => (
               <motion.div
@@ -517,7 +517,6 @@ const DataProtection: React.FC<DataProtectionProps> = ({ openContactModal }) => 
                 <div>
                   <div className="font-semibold text-gray-900">{testimonial.author}</div>
                   <div className="text-[#009FE3]">{testimonial.role}</div>
-                  <div className="text-gray-500">{testimonial.company}</div>
                 </div>
               </motion.div>
             ))}

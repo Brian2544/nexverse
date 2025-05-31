@@ -24,7 +24,7 @@ const contactInfo = [
       </svg>
     ),
     label: 'Phone',
-    value: '+254 757344002',
+    value: '+254 720943968',
   },
   {
     icon: (
@@ -33,7 +33,7 @@ const contactInfo = [
       </svg>
     ),
     label: 'Email',
-    value: 'drmuchiriconsulting@gmail.com',
+    value: 'info@nexverseconsulting.com',
   },
   {
     icon: (
@@ -93,7 +93,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
         },
         body: JSON.stringify({
           ...formData,
-          to: 'drmuchiriconsulting@gmail.com',
+          to: 'info@nexverseconsulting.com',
         }),
       });
 

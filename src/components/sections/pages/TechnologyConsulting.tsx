@@ -257,7 +257,7 @@ const TechnologyConsulting: React.FC<TechnologyConsultingProps> = ({ openContact
                 {
                   initials: 'JM',
                   name: 'Jane M.',
-                  role: 'CTO, FinTech Co.',
+                  role: 'CTO',
                   roleColor: 'text-[#009FE3]',
                   quote: 'NexVerse helped us modernize our infrastructure and implement robust security measures. Their expertise is unmatched.',
                   initialsBg: 'bg-gradient-to-br from-[#009FE3] to-[#23A6D5]'
@@ -265,7 +265,7 @@ const TechnologyConsulting: React.FC<TechnologyConsultingProps> = ({ openContact
                 {
                   initials: 'SK',
                   name: 'Samuel K.',
-                  role: 'IT Director, Retail Group',
+                  role: 'IT Director',
                   roleColor: 'text-[#FFA500]',
                   quote: 'The NexVerse team delivered a seamless cloud migration and supported us every step of the way. Highly recommended!',
                   initialsBg: 'bg-gradient-to-br from-[#FFA500] to-[#FFD580]'
@@ -273,7 +273,7 @@ const TechnologyConsulting: React.FC<TechnologyConsultingProps> = ({ openContact
                 {
                   initials: 'AL',
                   name: 'Amina L.',
-                  role: 'Head of Digital, GrowthHub',
+                  role: 'Head of Digital',
                   roleColor: 'text-[#009FE3]',
                   quote: 'Working with NexVerse was a game-changer. Their technical expertise helped us exceed our digital transformation goals.',
                   initialsBg: 'bg-gradient-to-br from-[#009FE3] to-[#23A6D5]'
@@ -281,7 +281,7 @@ const TechnologyConsulting: React.FC<TechnologyConsultingProps> = ({ openContact
                 {
                   initials: 'MT',
                   name: 'Michael T.',
-                  role: 'CIO, VisionCorp',
+                  role: 'CIO',
                   roleColor: 'text-[#FFA500]',
                   quote: 'Their team\'s professionalism and technical knowledge made a real difference for our digital infrastructure.',
                   initialsBg: 'bg-gradient-to-br from-[#FFA500] to-[#FFD580]'
@@ -289,7 +289,7 @@ const TechnologyConsulting: React.FC<TechnologyConsultingProps> = ({ openContact
                 {
                   initials: 'RS',
                   name: 'Rita S.',
-                  role: 'Tech Lead, MarketLeaders',
+                  role: 'Tech Lead',
                   roleColor: 'text-[#009FE3]',
                   quote: 'We appreciated their tailored approach to our technology needs and the measurable results we achieved.',
                   initialsBg: 'bg-gradient-to-br from-[#009FE3] to-[#23A6D5]'
@@ -297,7 +297,7 @@ const TechnologyConsulting: React.FC<TechnologyConsultingProps> = ({ openContact
                 {
                   initials: 'DK',
                   name: 'David K.',
-                  role: 'IT Director, InnovateX',
+                  role: 'IT Director',
                   roleColor: 'text-[#FFA500]',
                   quote: 'NexVerse\'s expertise in digital transformation was invaluable to our project\'s success.',
                   initialsBg: 'bg-gradient-to-br from-[#FFA500] to-[#FFD580]'

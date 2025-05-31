@@ -76,19 +76,19 @@ const painPoints = [
 const testimonials = [
   {
     name: 'Jane M.',
-    company: 'FinTech Africa',
+    company: '',
     quote: 'NexVerse delivered a seamless digital transformation. Our efficiency soared and our clients noticed the difference immediately.',
     image: '/assets/images/hero_african_consulting.jpg',
   },
   {
     name: 'Samuel K.',
-    company: 'RetailPro',
+    company: '',
     quote: 'From legacy systems to cloud, NexVerse made the journey smooth and secure. Highly recommended!',
     image: '/assets/images/hero_african_team.jpg',
   },
   {
     name: 'Linda O.',
-    company: 'HealthSync',
+    company: '',
     quote: 'Their team understood our pain points and delivered real, measurable results. We are now truly digital-first.',
     image: '/assets/images/hero_african_business.jpg',
   },

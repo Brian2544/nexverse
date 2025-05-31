@@ -256,7 +256,7 @@ const BusinessConsulting: React.FC<BusinessConsultingProps> = ({ openContactModa
                 {
                   initials: 'JM',
                   name: 'Jane M.',
-                  role: 'CEO, FinTech Co.',
+                  role: 'CEO',
                   roleColor: 'text-[#009FE3]',
                   quote: 'NexVerse helped us streamline our operations and achieve measurable growth. Their business expertise is unmatched.',
                   initialsBg: 'bg-gradient-to-br from-[#009FE3] to-[#23A6D5]'
@@ -264,7 +264,7 @@ const BusinessConsulting: React.FC<BusinessConsultingProps> = ({ openContactModa
                 {
                   initials: 'SK',
                   name: 'Samuel K.',
-                  role: 'COO, Retail Group',
+                  role: 'COO',
                   roleColor: 'text-[#FFA500]',
                   quote: 'The NexVerse team delivered a clear business strategy and supported us every step of the way. Highly recommended!',
                   initialsBg: 'bg-gradient-to-br from-[#FFA500] to-[#FFD580]'
@@ -272,7 +272,7 @@ const BusinessConsulting: React.FC<BusinessConsultingProps> = ({ openContactModa
                 {
                   initials: 'AL',
                   name: 'Amina L.',
-                  role: 'Head of Operations, GrowthHub',
+                  role: 'Head of Operations',
                   roleColor: 'text-[#009FE3]',
                   quote: 'Working with NexVerse was a game-changer. Their process optimization helped us exceed our efficiency targets.',
                   initialsBg: 'bg-gradient-to-br from-[#009FE3] to-[#23A6D5]'
@@ -280,7 +280,7 @@ const BusinessConsulting: React.FC<BusinessConsultingProps> = ({ openContactModa
                 {
                   initials: 'MT',
                   name: 'Michael T.',
-                  role: 'Managing Director, VisionCorp',
+                  role: 'Managing Director',
                   roleColor: 'text-[#FFA500]',
                   quote: 'Their team\'s professionalism and business acumen made a real difference for our organization.',
                   initialsBg: 'bg-gradient-to-br from-[#FFA500] to-[#FFD580]'
@@ -288,7 +288,7 @@ const BusinessConsulting: React.FC<BusinessConsultingProps> = ({ openContactModa
                 {
                   initials: 'RS',
                   name: 'Rita S.',
-                  role: 'Operations Director, MarketLeaders',
+                  role: 'Operations Director',
                   roleColor: 'text-[#009FE3]',
                   quote: 'We appreciated their tailored approach to our business needs and the measurable results we achieved.',
                   initialsBg: 'bg-gradient-to-br from-[#009FE3] to-[#23A6D5]'
@@ -296,7 +296,7 @@ const BusinessConsulting: React.FC<BusinessConsultingProps> = ({ openContactModa
                 {
                   initials: 'DK',
                   name: 'David K.',
-                  role: 'Business Director, InnovateX',
+                  role: 'Business Director',
                   roleColor: 'text-[#FFA500]',
                   quote: 'NexVerse\'s expertise in business transformation was invaluable to our project\'s success.',
                   initialsBg: 'bg-gradient-to-br from-[#FFA500] to-[#FFD580]'

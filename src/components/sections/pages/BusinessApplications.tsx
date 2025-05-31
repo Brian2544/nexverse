@@ -83,7 +83,7 @@ const BusinessApplications: React.FC<BusinessApplicationsProps> = ({ openContact
                 onClick={() => openModal('process')}
                 aria-label="Book a Demo"
               >
-                Book a Demo
+                Get Started Today
               </motion.button>
             </div>
           </motion.div>
@@ -245,25 +245,25 @@ const BusinessApplications: React.FC<BusinessApplicationsProps> = ({ openContact
               {
                 quote: 'Nexverse delivered a custom analytics platform that transformed our decision-making. Their expertise and dedication are unmatched.',
                 name: 'Sarah M.',
-                company: 'COO, FinTech Leader',
+                company: 'COO',
                 img: '/images/testimonials/sarah.jpg'
               },
               {
                 quote: 'We trusted Nexverse with our cloud migration. The process was seamless, secure, and exceeded our expectations.',
                 name: 'James K.',
-                company: 'CTO, Retail Group',
+                company: 'CTO',
                 img: '/images/testimonials/michael.jpg'
               },
               {
                 quote: 'Their consultants are true partners—responsive, innovative, and always focused on our business goals.',
                 name: 'Priya S.',
-                company: 'Head of IT, Healthcare',
+                company: 'Head of IT',
                 img: '/images/testimonials/emma.jpg'
               },
               {
                 quote: 'From legacy modernization to ongoing support, Nexverse is the best consultancy we have worked with.',
                 name: 'David L.',
-                company: 'CIO, Manufacturing',
+                company: 'CIO',
                 img: '/images/impact/profile.jpg'
               }
             ].map((t, i) => (
@@ -337,7 +337,7 @@ const BusinessApplications: React.FC<BusinessApplicationsProps> = ({ openContact
             onClick={() => openModal('process')}
             aria-label="Book My Free Consultation"
           >
-            Book My Free Consultation
+            Book Our Free Consultation
           </motion.button>
         </motion.div>
       </section>

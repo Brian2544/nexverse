@@ -135,15 +135,15 @@ const complianceBadges = [
 const testimonials = [
   {
     quote: 'Nexverse transformed our security posture. We sleep better at night knowing they have our back.',
-    name: 'CIO, Fintech Company',
+    name: 'CIO',
   },
   {
     quote: 'Their rapid response saved us from a ransomware disaster. True professionals.',
-    name: 'IT Director, Healthcare Provider',
+    name: 'IT Director',
   },
   {
     quote: 'Compliance used to be a nightmare. Now it\'s a breeze with Nexverse.',
-    name: 'COO, E-commerce Brand',
+    name: 'COO',
   },
 ];
 
@@ -537,7 +537,7 @@ const InformationSecurity: React.FC<InformationSecurityProps> = ({ openContactMo
                 onClick={() => openModal('dashboard')}
                 className="mt-8 inline-block px-8 py-3 rounded-lg font-bold text-white bg-gradient-to-r from-[#009FE3] to-[#FFA500] shadow-lg hover:from-[#FFA500] hover:to-[#009FE3] transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#009FE3]/40 text-lg"
               >
-                Get a Live Demo
+                Get in Touch
               </motion.button>
             </motion.div>
             <motion.div
@@ -614,7 +614,7 @@ const InformationSecurity: React.FC<InformationSecurityProps> = ({ openContactMo
         <div className="mt-8 flex flex-col items-center gap-2">
           <span className="text-sm">Nexverse Consulting Group Ltd</span>
           <span className="text-sm">034 Business Avenue, Westlands, Nairobi, Kenya</span>
-          <span className="text-sm">+254 720943968 | drmuchiriconsulting@gmail.com</span>
+          <span className="text-sm">+254 720943968 | info@nexverseconsulting.com</span>
         </div>
       </footer>
 

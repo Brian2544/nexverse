@@ -377,12 +377,12 @@ const ProjectManagement: React.FC<ProjectManagementProps> = ({ openContactModal 
             {
               quote: "NexVerse delivered our project on time and within budget. Their project management expertise was invaluable.",
               author: "John Smith",
-              role: "CTO, TechCorp"
+              role: "CTO"
             },
             {
               quote: "The team's attention to detail and communication throughout the project was exceptional.",
               author: "Sarah Johnson",
-              role: "Project Director, Innovate Inc"
+              role: "Project Director"
             }
           ].map((testimonial, index) => (
             <motion.div

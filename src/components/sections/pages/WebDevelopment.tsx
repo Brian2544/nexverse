@@ -198,17 +198,17 @@ const testimonials = [
   {
     quote: 'Our new website doubled our leads in 3 months. The NexVerse team delivered beyond expectations!',
     name: 'Alex N.',
-    company: 'RetailPro',
+    company: '',
   },
   {
     quote: 'The design is stunning, and our customers love the new experience. Highly recommended!',
     name: 'Priya S.',
-    company: 'HealthSync',
+    company: '',
   },
   {
     quote: "NexVerse solved our performance and security issues—now our site is fast and secure.",
     name: 'James T.',
-    company: 'FinEdge',
+    company: '',
   },
 ];
 
@@ -223,12 +223,6 @@ const WebDevelopment: React.FC<WebDevelopmentProps> = ({ openContactModal }) => 
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-blue-50">
-      {/* SEO */}
-      <head>
-        <title>Web Development Services | NexVerse Consulting Group</title>
-        <meta name="description" content="Modern, secure, and high-converting web development solutions from NexVerse. Custom design, performance, and support. Book a free consultation." />
-      </head>
-
       {/* 1. Hero Section */}
       <section className="relative flex flex-col items-center justify-center px-6 py-20 min-h-[60vh] overflow-hidden" style={{background: 'none'}}>
         {/* Video Background */}
@@ -336,7 +330,6 @@ const WebDevelopment: React.FC<WebDevelopmentProps> = ({ openContactModal }) => 
               >
                 <p className="text-[#1e2761] italic mb-4">"{t.quote}"</p>
                 <span className="font-bold text-[#009FE3]">{t.name}</span>
-                <span className="text-xs text-[#3b4a6b]">{t.company}</span>
               </motion.div>
             ))}
           </div>
@@ -474,7 +467,7 @@ const WebDevelopment: React.FC<WebDevelopmentProps> = ({ openContactModal }) => 
             onClick={() => setModalOpen(true)}
             aria-label="Book My Free Web Consultation"
           >
-            Book My Free Web Consultation
+            Book Our Free Web Consultation
           </button>
         </motion.div>
       </section>

@@ -104,7 +104,7 @@ const Footer: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
                 <span className="text-gray-600">
-                  123 Central Wetlands<br />
+                  034 Central Westlands<br />
                   Nairobi, Kenya<br />
                   EC1A 1BB
                 </span>
@@ -113,8 +113,8 @@ const Footer: React.FC = () => {
                 <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
-                <a href="mailto:contact@nexverse.com" className="text-gray-600 hover:text-[#009FE3] transition-colors">
-                  contact@nexverse.com
+                <a href="mailto:info@nexverseconsulting.com" className="text-gray-600 hover:text-[#009FE3] transition-colors">
+                  info@nexverseconsulting.com
                 </a>
               </li>
               <li className="flex items-center space-x-3">

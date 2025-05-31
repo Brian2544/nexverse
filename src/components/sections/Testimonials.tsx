@@ -5,19 +5,19 @@ import OptimizedImage from '../common/OptimizedImage';
 const testimonials = [
   {
     name: 'Sarah Johnson',
-    position: 'CEO, TechCorp',
+    position: 'CEO',
     content: 'Nexverse transformed our digital strategy and helped us achieve remarkable growth in just six months.',
     image: '/assets/images/testimonials/sarah.avif',
   },
   {
     name: 'Michael Chen',
-    position: 'CTO, InnovateX',
+    position: 'CTO',
     content: 'Their expertise in digital transformation and AI implementation has been invaluable to our business.',
     image: '/assets/images/testimonials/michael.avif',
   },
   {
     name: 'Emily Rodriguez',
-    position: 'Marketing Director, GrowthLabs',
+    position: 'Marketing Director',
     content: 'Working with Nexverse has been a game-changer for our marketing and customer engagement strategies.',
     image: '/assets/images/testimonials/emily.avif',
   },

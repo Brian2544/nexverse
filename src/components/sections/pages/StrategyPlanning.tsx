@@ -338,9 +338,9 @@ const StrategyPlanning: React.FC<StrategyPlanningProps> = ({ openContactModal })
               whileTap={{ scale: 0.97 }}
               className="bg-[#009FE3] hover:bg-[#00B6F0] font-bold px-10 py-4 rounded-xl shadow-xl text-white text-xl focus:outline-none focus:ring-4 focus:ring-[#FFA500]/40 transition border-2 border-white/10"
               onClick={() => openContactModal()}
-              aria-label="Book My Free Consultation"
+              aria-label="Book Our Free Consultation"
             >
-              Book My Free Consultation
+              Book Our Free Consultation
             </motion.button>
             <p className="mt-6 text-white/80 text-base max-w-xs text-center md:text-right">
               We turn your vision into measurable results—fast. Let's solve your biggest strategy pain points together.
@@ -707,9 +707,9 @@ const StrategyPlanning: React.FC<StrategyPlanningProps> = ({ openContactModal })
             whileTap={{ scale: 0.97 }}
             className="bg-gradient-to-r from-[#FFA500] to-[#009FE3] font-bold px-10 py-4 rounded-lg shadow-xl text-white text-xl focus:outline-none focus:ring-4 focus:ring-[#FFA500]/40 transition"
             onClick={() => openContactModal()}
-            aria-label="Book My Free Consultation"
+            aria-label="Book Our Free Consultation"
           >
-            Book My Free Consultation
+            Book Our Free Consultation
           </motion.button>
         </motion.div>
       </section>

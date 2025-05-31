@@ -44,7 +44,6 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
         loading={loading}
         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         decoding="async"
-        fetchPriority={loading === 'eager' ? 'high' : 'auto'}
         onLoad={() => setIsLoaded(true)}
       />
       {placeholder === 'blur' && blurDataURL && !isLoaded && (

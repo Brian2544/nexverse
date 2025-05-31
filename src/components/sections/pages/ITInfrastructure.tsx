@@ -56,17 +56,17 @@ const testimonials = [
   {
     quote: 'NexVerse transformed our IT—zero downtime, seamless cloud migration, and amazing support!',
     name: 'Jane M.',
-    company: 'Acme Corp.',
+    company: '',
   },
   {
     quote: 'Their proactive approach to security and infrastructure gave us peace of mind and room to grow.',
     name: 'Samuel K.',
-    company: 'FinEdge Solutions',
+    company: '',
   },
   {
     quote: "We scaled our operations effortlessly thanks to NexVerse's expertise and 24/7 support.",
     name: 'Linda O.',
-    company: 'HealthFirst',
+    company: '',
   },
 ];
 
@@ -410,12 +410,6 @@ const ITInfrastructure: React.FC<ITInfrastructureProps> = ({ openContactModal })
 
   return (
     <div className="w-full min-h-screen flex flex-col bg-blue-50">
-      {/* SEO */}
-      <head>
-        <title>IT Infrastructure Services | NexVerse Consulting Group</title>
-        <meta name="description" content="Modernize your business with secure, scalable IT infrastructure solutions from NexVerse. Cloud, security, support, and more. Book a free assessment." />
-      </head>
-
       {/* 1. Hero Section */}
       <section ref={heroRef} className="relative flex flex-col items-center justify-center px-6 py-20 min-h-[60vh] overflow-hidden" style={{background: 'none'}}>
         {/* WebGL Canvas Background */}
@@ -615,7 +609,6 @@ const ITInfrastructure: React.FC<ITInfrastructureProps> = ({ openContactModal })
               >
                 <p className="text-[#1e2761] italic mb-4">"{t.quote}"</p>
                 <span className="font-bold text-[#009FE3]">{t.name}</span>
-                <span className="text-xs text-[#3b4a6b]">{t.company}</span>
               </motion.div>
             ))}
           </div>
@@ -635,7 +628,7 @@ const ITInfrastructure: React.FC<ITInfrastructureProps> = ({ openContactModal })
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ duration: 0.7 }} className="text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Ready to Upgrade Your IT?</h2>
           <p className="text-white/90 mb-6 max-w-xl mx-auto">
-            Let's build a future-ready IT foundation together. Book your free consultation or call us at <a href="tel:+254757344002" className="underline text-[#FFA500] hover:text-white">+254 720943968</a>.
+            Let's build a future-ready IT foundation together. Book your free consultation or call us at <a href="tel:+254720943968" className="underline text-[#FFA500] hover:text-white">+254 720943968</a>.
           </p>
           <button
             className="bg-white text-[#009FE3] font-bold px-8 py-3 rounded-lg shadow hover:bg-gray-100 transition focus:outline-none focus:ring-4 focus:ring-[#FFA500]/40"

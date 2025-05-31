@@ -11,7 +11,7 @@ app.use(express.json());
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'drmuchiriconsulting@gmail.com',
+    user: 'info@nexverseconsulting.com',
     pass: process.env.EMAIL_PASSWORD, // Use environment variable for security
   },
 });
@@ -23,8 +23,8 @@ app.post('/api/contact', async (req, res) => {
 
     // Email options
     const mailOptions = {
-      from: 'drmuchiriconsulting@gmail.com',
-      to: 'drmuchiriconsulting@gmail.com',
+      from: 'info@nexverseconsulting.com',
+      to: 'info@nexverseconsulting.com',
       subject: `New Contact Form Submission: ${subject}`,
       html: `
         <h2>New Contact Form Submission</h2>
