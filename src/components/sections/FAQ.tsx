@@ -6,7 +6,7 @@ const faqs = [
   {
     question: 'How does your consulting process work?',
     answer:
-      'We begin with a detailed consultation to understand your needs, followed by tailored strategies and ongoing support to drive measurable results.',
+      'We begin with a detailed analysis of your business to understand your needs, followed by tailored strategies and ongoing support to drive measurable results.',
   },
   {
     question: 'What industries do you specialize in?',
