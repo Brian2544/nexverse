@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Navbar from './components/layout/Navbar';
@@ -15,8 +15,8 @@ import Testimonials from './components/sections/Testimonials';
 import Contact from './components/sections/Contact';
 import Footer from './components/layout/Footer';
 import ChatWidget from './components/common/ChatWidget';
-import ContactModal from './components/modals/ContactModal';
 import ScrollToHashElement from './components/common/ScrollToHashElement';
+import { Helmet } from 'react-helmet-async';
 // Import all generated pages
 import StrategyConsulting from './components/sections/pages/StrategyConsulting';
 import TechnologyConsulting from './components/sections/pages/TechnologyConsulting';
@@ -35,6 +35,7 @@ import OurVision from './components/sections/pages/OurVision';
 import OurMission from './components/sections/pages/OurMission';
 import OurCoreValues from './components/sections/pages/OurCoreValues';
 
+const ContactModal = React.lazy(() => import('./components/modals/ContactModal'));
 
 const App: React.FC = () => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
@@ -68,6 +69,14 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen relative bg-[#e0f2f1]">
+      <Helmet>
+        <title>Nexverse Consulting Group - Digital Transformation & IT Solutions</title>
+        <meta name="description" content="Nexverse Consulting Group offers digital transformation, IT consulting, and business solutions in Nairobi, Kenya. Accelerate your business with our expert team." />
+        <meta property="og:title" content="Nexverse Consulting Group - Digital Transformation & IT Solutions" />
+        <meta property="og:description" content="Nexverse Consulting Group offers digital transformation, IT consulting, and business solutions in Nairobi, Kenya. Accelerate your business with our expert team." />
+        <meta property="og:image" content="/assets/images/og-image.jpg" />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
       <Toaster />
       <Navbar 
         openContactModal={openContactModal}
@@ -114,12 +123,14 @@ const App: React.FC = () => {
         </main>
         <Footer />
         <ChatWidget />
-        <ContactModal
-          isOpen={isContactModalOpen}
-          onClose={() => setIsContactModalOpen(false)}
-          anchorRect={buttonRect}
-          source="process"
-        />
+        <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
+          <ContactModal
+            isOpen={isContactModalOpen}
+            onClose={() => setIsContactModalOpen(false)}
+            anchorRect={buttonRect}
+            source="process"
+          />
+        </Suspense>
       </div>
     </div>
   );

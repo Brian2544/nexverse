@@ -46,4 +46,10 @@ html {
   .subheading {
     @apply text-xl md:text-2xl text-gray-600;
   }
+}
+
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+  }
 } 

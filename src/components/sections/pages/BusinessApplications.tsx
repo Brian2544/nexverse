@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ContactModal from '../../modals/ContactModal';
+// import ContactModal from '../../modals/ContactModal';
+const ContactModal = React.lazy(() => import('../../modals/ContactModal'));
 
 const LOGO_COLORS = {
   blue: '#009FE3',
@@ -93,7 +94,7 @@ const BusinessApplications: React.FC<BusinessApplicationsProps> = ({ openContact
       {/* 2. WHY NEXVERSE (TRUST) */}
       <section className="py-16 px-4 bg-gradient-to-br from-white via-[#f6fafd] to-[#eaf6fb]">
         <div className="max-w-5xl mx-auto text-center">
-          <img src="/assets/images/business_application1.jpg" alt="Trusted Business Consulting" className="mx-auto mb-8 rounded-xl shadow-lg w-full max-w-md object-cover" />
+          <img src="/assets/images/business_application1.jpg" alt="Trusted Business Consulting" loading="lazy" className="mx-auto mb-8 rounded-xl shadow-lg w-full max-w-md object-cover" />
           <motion.h2 initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ duration: 0.7 }} className="text-3xl md:text-4xl font-bold text-[#181a2a] mb-4">
             Why Top Businesses Trust Nexverse
           </motion.h2>
@@ -147,7 +148,7 @@ const BusinessApplications: React.FC<BusinessApplicationsProps> = ({ openContact
             </motion.button>
           </motion.div>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} transition={{ delay: 0.2, duration: 0.7 }} className="order-1 md:order-2 flex justify-center">
-            <img src="/images/transformations/techcorp.jpg" alt="Consulting Approach - Tech Transformation" className="h-64 w-auto rounded-xl shadow-xl border-4 border-[#009FE3]/30 object-cover" />
+            <img src="/images/transformations/techcorp.jpg" alt="Consulting Approach - Tech Transformation" loading="lazy" className="h-64 w-auto rounded-xl shadow-xl border-4 border-[#009FE3]/30 object-cover" />
           </motion.div>
         </div>
       </section>
@@ -222,7 +223,7 @@ const BusinessApplications: React.FC<BusinessApplicationsProps> = ({ openContact
                 whileHover={{ y: -8, boxShadow: `0 8px 32px ${i % 2 === 0 ? LOGO_COLORS.blue : LOGO_COLORS.orange}22` }}
                 className="bg-[#f6fafd] border border-[#eaf6fb] rounded-xl p-6 transition-all flex flex-col items-center text-center"
               >
-                <img src={service.img} alt={service.title + ' illustration'} className="w-full h-32 object-cover rounded-lg mb-4" />
+                <img src={service.img} alt={service.title + ' illustration'} loading="lazy" className="w-full h-32 object-cover rounded-lg mb-4" />
                 <div className="w-14 h-14 rounded-lg flex items-center justify-center mb-4 bg-gradient-to-br from-[#009FE3]/20 via-[#FF694B]/10 to-[#625fd1]/20">
                   {service.icon}
                 </div>
@@ -277,7 +278,7 @@ const BusinessApplications: React.FC<BusinessApplicationsProps> = ({ openContact
                 className="bg-white border border-[#eaf6fb] rounded-xl p-6 mb-2 text-left shadow-lg hover:shadow-2xl transition-all"
               >
                 <div className="flex items-center gap-4 mb-4">
-                  <img src={t.img} alt={t.name + ' testimonial'} className="w-14 h-14 rounded-full object-cover border-2 border-[#009FE3]/30" />
+                  <img src={t.img} alt={t.name + ' testimonial'} loading="lazy" className="w-14 h-14 rounded-full object-cover border-2 border-[#009FE3]/30" />
                   <div>
                     <div className="text-[#181a2a] font-semibold text-base">{t.name}</div>
                     <div className="text-[#6b7280] text-xs">{t.company}</div>
@@ -317,7 +318,7 @@ const BusinessApplications: React.FC<BusinessApplicationsProps> = ({ openContact
               { src: '/images/industries/manufacturing.jpg', alt: 'Manufacturing' },
               { src: '/images/industries/tech.jpg', alt: 'Tech' },
             ].map((img, i) => (
-              <img key={i} src={img.src} alt={img.alt} className="h-16 w-16 rounded-lg shadow border-2 border-[#009FE3]/30 bg-white/10 object-cover" />
+              <img key={i} src={img.src} alt={img.alt} loading="lazy" className="h-16 w-16 rounded-lg shadow border-2 border-[#009FE3]/30 bg-white/10 object-cover" />
             ))}
           </motion.div>
         </div>
@@ -344,9 +345,11 @@ const BusinessApplications: React.FC<BusinessApplicationsProps> = ({ openContact
 
       {/* CONTACT MODAL */}
       <AnimatePresence>
-        {modalOpen && (
-          <ContactModal isOpen={modalOpen} onClose={closeModal} source={modalSource} />
-        )}
+        <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
+          {modalOpen && (
+            <ContactModal isOpen={modalOpen} onClose={closeModal} source={modalSource} />
+          )}
+        </Suspense>
       </AnimatePresence>
     </div>
   );

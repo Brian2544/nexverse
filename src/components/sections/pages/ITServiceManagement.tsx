@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Suspense } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
-import ContactModal from '../../modals/ContactModal';
 import { 
   WrenchScrewdriverIcon, 
   ClockIcon, 
@@ -259,6 +258,8 @@ const ITServiceManagement: React.FC<ITServiceManagementProps> = ({ openContactMo
       }
     ]
   };
+
+  const ContactModal = React.lazy(() => import('../../modals/ContactModal'));
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -716,7 +717,9 @@ const ITServiceManagement: React.FC<ITServiceManagementProps> = ({ openContactMo
       </section>
 
       {/* Contact Modal */}
-      <ContactModal isOpen={modalOpen} onClose={() => setModalOpen(false)} source="process" />
+      <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
+        <ContactModal isOpen={modalOpen} onClose={() => setModalOpen(false)} source="process" />
+      </Suspense>
     </div>
   );
 };

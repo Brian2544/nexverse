@@ -159,7 +159,7 @@ const WhyNexverse: React.FC = () => {
             Nexverse revolutionized our customer understanding, boosting retention like<br className="hidden md:block" /> never before.
           </blockquote>
           <div className="flex flex-col items-center">
-            <img src="/assets/images/kb.jpg" alt="Brian Omondi" className="w-16 h-16 rounded-full object-cover shadow mb-2" />
+            <img src="/assets/images/kb.jpg" alt="Brian Omondi" loading="lazy" className="w-16 h-16 rounded-full object-cover shadow mb-2" />
             <div className="text-xl font-semibold text-gray-900">Brian Omondi</div>
             <div className="flex gap-2 mt-2">
               <span className="text-white text-sm font-semibold px-3 py-1 rounded-full shadow" style={{background: 'linear-gradient(90deg, #21b6e6 0%, #ffb300 100%)'}}>High conversion</span>

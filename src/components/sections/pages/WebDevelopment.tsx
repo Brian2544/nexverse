@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import ImageWithFallback from '../../common/ImageWithFallback';
-import ContactModal from '../../modals/ContactModal';
+// import ContactModal from '../../modals/ContactModal';
+const ContactModal = React.lazy(() => import('../../modals/ContactModal'));
 import { 
   CodeBracketIcon, 
   DevicePhoneMobileIcon, 
@@ -473,7 +474,9 @@ const WebDevelopment: React.FC<WebDevelopmentProps> = ({ openContactModal }) => 
       </section>
 
       {/* Contact Modal */}
-      <ContactModal isOpen={modalOpen} onClose={() => setModalOpen(false)} source="process" />
+      <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
+        <ContactModal isOpen={modalOpen} onClose={() => setModalOpen(false)} source="process" />
+      </Suspense>
     </div>
   );
 };

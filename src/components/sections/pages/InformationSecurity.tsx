@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ImageWithFallback from '../../common/ImageWithFallback';
-import ContactModal from '../../modals/ContactModal';
+// import ContactModal from '../../modals/ContactModal';
+const ContactModal = React.lazy(() => import('../../modals/ContactModal'));
 import { 
   ShieldCheckIcon, 
   LockClosedIcon, 
@@ -620,9 +621,11 @@ const InformationSecurity: React.FC<InformationSecurityProps> = ({ openContactMo
 
       {/* Contact Modal */}
       <AnimatePresence>
-        {modalOpen && (
-          <ContactModal isOpen={modalOpen} onClose={closeModal} source={modalSource as any} />
-        )}
+        <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
+          {modalOpen && (
+            <ContactModal isOpen={modalOpen} onClose={closeModal} source={modalSource as any} />
+          )}
+        </Suspense>
       </AnimatePresence>
 
       {/* Custom Modal */}

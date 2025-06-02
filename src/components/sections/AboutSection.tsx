@@ -43,7 +43,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({
       <div className="flex flex-col md:flex-row items-center justify-center gap-8">
         {/* Team Image or Logo */}
         <div className="flex-shrink-0 mb-6 md:mb-0">
-          <img src={image} alt={imageAlt} className="w-28 h-28 rounded-2xl shadow-lg border-2 border-blue-700/30 object-cover bg-[#151725]/70" />
+          <img src={image} alt={imageAlt} loading="lazy" className="w-28 h-28 rounded-2xl shadow-lg border-2 border-blue-700/30 object-cover bg-[#151725]/70" />
         </div>
         {/* About Details */}
         <div className="text-left md:text-left max-w-md">

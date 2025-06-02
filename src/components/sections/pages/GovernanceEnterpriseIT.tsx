@@ -256,9 +256,9 @@ const GovernanceEnterpriseIT: React.FC<GovernanceEnterpriseITProps> = ({ openCon
             </div>
             <div className="mt-10 flex items-center gap-2">
               <div className="flex -space-x-2">
-                <img src="/assets/images/ceo.png" className="w-10 h-10 rounded-full border-2 border-gray-900" alt="User" />
-                <img src="/assets/images/hero_african_team.jpg" className="w-10 h-10 rounded-full border-2 border-gray-900" alt="User" />
-                <img src="/assets/images/hero_african_business.jpg" className="w-10 h-10 rounded-full border-2 border-gray-900" alt="User" />
+                <img src="/assets/images/ceo.png" className="w-10 h-10 rounded-full border-2 border-gray-900" alt="User" loading="lazy" />
+                <img src="/assets/images/hero_african_team.jpg" className="w-10 h-10 rounded-full border-2 border-gray-900" alt="User" loading="lazy" />
+                <img src="/assets/images/hero_african_business.jpg" className="w-10 h-10 rounded-full border-2 border-gray-900" alt="User" loading="lazy" />
               </div>
               <div className="text-white/70 text-sm">
                 Trusted by <span className="text-white font-medium">100+ enterprises</span> worldwide
