@@ -348,7 +348,7 @@ const Hero: React.FC<HeroProps> = ({ openContactModal }) => {
           </motion.h1>
           <motion.p
             variants={fadeUp}
-            className="text-white md:text-[#009FE3] text-lg md:text-xl mb-4 max-w-2xl font-inter font-light tracking-normal"
+            className="text-white text-lg md:text-xl mb-4 max-w-2xl font-inter font-light tracking-normal"
           >
             Partner with Nexverse Consulting for expert guidance, tailored strategies, and measurable results.
           </motion.p>
