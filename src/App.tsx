@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import Navbar from './components/layout/Navbar';
 import Hero from './components/sections/Hero';
 import WhyNexverse from './components/sections/WhyNexverse';
@@ -41,6 +42,11 @@ const App: React.FC = () => {
   const getInTouchBtnRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
 
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   const openContactModal = useCallback((anchorRect?: DOMRect | null) => {
     if (anchorRect) setButtonRect(anchorRect);
     else setButtonRect(null);
@@ -62,6 +68,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen relative bg-[#e0f2f1]">
+      <Toaster />
       <Navbar 
         openContactModal={openContactModal}
         getInTouchBtnRef={getInTouchBtnRef}

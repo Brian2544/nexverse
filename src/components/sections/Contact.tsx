@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import OptimizedImage from '../common/OptimizedImage';
+import { toast } from 'react-hot-toast';
 
 interface FormData {
   name: string;
@@ -22,10 +23,40 @@ const Contact = () => {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    try {
+      const response = await fetch('https://formspree.io/f/info@nexverseconsulting.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        toast.success('✔️ Your message has been sent successfully!', {
+          duration: 4000,
+          position: 'bottom-center',
+        });
+        setFormData({
+          name: '',
+          email: '',
+          date: '',
+          service: '',
+          budget: '',
+          message: '',
+        });
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast.error('Sorry, there was an error sending your message. Please try again later.', {
+        duration: 4000,
+        position: 'bottom-center',
+      });
+    }
   };
 
   const handleChange = (
@@ -194,8 +225,11 @@ const Contact = () => {
           {/* Contact Form */}
           <form
             onSubmit={handleSubmit}
+            action="https://formspree.io/f/info@nexverseconsulting.com"
+            method="POST"
             className="w-full max-w-xl bg-[#0e254a] rounded-2xl p-8 flex flex-col gap-4 shadow-xl"
           >
+            <input type="hidden" name="_subject" value="New Submission from Nexverse Website" />
             <div className="flex flex-col md:flex-row gap-4">
               <input
                 type="text"

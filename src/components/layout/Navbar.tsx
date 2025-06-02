@@ -168,6 +168,23 @@ const Navbar: React.FC<{ openContactModal: (anchorRect?: DOMRect | null) => void
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
+  // Handle body scroll lock when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${window.scrollY}px`;
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
+  }, [mobileOpen]);
+
   // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -178,12 +195,10 @@ const Navbar: React.FC<{ openContactModal: (anchorRect?: DOMRect | null) => void
 
     if (mobileOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      document.body.style.overflow = 'hidden';
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      document.body.style.overflow = 'unset';
     };
   }, [mobileOpen]);
 
@@ -291,7 +306,7 @@ const Navbar: React.FC<{ openContactModal: (anchorRect?: DOMRect | null) => void
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: '100%' }}
               transition={{ type: 'spring', duration: 0.5 }}
-              className="fixed right-0 top-0 z-[9999] w-full sm:w-[85vw] h-full bg-white shadow-2xl overflow-hidden flex flex-col rounded-l-3xl border-l border-[#e5e7eb]"
+              className="fixed right-0 top-0 z-[9999] w-full sm:w-[85vw] h-[100dvh] bg-white shadow-2xl overflow-hidden flex flex-col rounded-l-3xl border-l border-[#e5e7eb]"
             >
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">

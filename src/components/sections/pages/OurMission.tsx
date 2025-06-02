@@ -141,27 +141,26 @@ const OurMission: React.FC<OurMissionProps> = ({ openContactModal }) => {
             {missionData.map((item, idx) => (
               <div
                 key={item.title}
-                className={`flex flex-col ${idx % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'} items-stretch gap-0 md:gap-0 bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100`}
-                style={{ minHeight: '200px', maxHeight: '320px' }}
+                className={`flex flex-col md:flex-row${idx % 2 === 1 ? '-reverse' : ''} items-stretch bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100`}
               >
                 <motion.div
                   initial={{ opacity: 0, x: idx % 2 === 1 ? 40 : -40 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7 }}
-                  whileHover={{ scale: 1.03, boxShadow: '0 4px 16px 0 rgba(43,42,127,0.12)' }}
-                  className={`w-full md:w-2/5 flex items-center justify-center bg-gray-50 ${idx % 2 === 0 ? 'rounded-tl-2xl rounded-br-2xl' : 'rounded-tr-2xl rounded-bl-2xl'}`}
-                  style={{ minHeight: '200px', maxHeight: '320px' }}
+                  whileHover={{ scale: 1.02 }}
+                  className={`w-full md:w-2/5 flex items-center justify-center bg-gray-50 ${idx % 2 === 0 ? 'rounded-tl-2xl rounded-br-2xl' : 'rounded-tr-2xl rounded-bl-2xl'} overflow-hidden`}
+                  style={{ minHeight: undefined, maxHeight: undefined, ...(window.innerWidth >= 768 ? { minHeight: '200px', maxHeight: '320px' } : {}) }}
                 >
                   <OptimizedImage
                     src={item.image}
                     alt={item.alt}
-                    className="w-full h-full object-cover transition-transform duration-300 rounded-[inherit]"
+                    className="w-full h-auto object-cover transition-transform duration-300 rounded-[inherit]"
                     loading="lazy"
                     quality={85}
                   />
                 </motion.div>
-                <div className="w-full md:w-3/5 flex flex-col justify-center px-4 py-6 md:py-0 md:px-8" style={{ minHeight: '200px' }}>
+                <div className="w-full md:w-3/5 flex flex-col justify-center px-4 py-6 md:py-0 md:px-8" style={window.innerWidth >= 768 ? { minHeight: '200px' } : {}}>
                   <div className="flex items-center mb-1">
                     <span className="bg-[#009FE3] text-white rounded-full w-8 h-8 flex items-center justify-center font-bold mr-3 text-base shadow-md">{(idx+1).toString().padStart(2, '0')}</span>
                     <h3 className="text-lg md:text-xl font-bold text-gray-900">{item.title}</h3>

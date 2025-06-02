@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { toast } from 'react-hot-toast';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -45,7 +46,7 @@ const contactInfo = [
     label: 'Address',
     value: (
       <span>
-        123 Business Avenue<br />Westlands<br />Nairobi, Kenya
+        034 Business Avenue<br />Westlands<br />Nairobi, Kenya
       </span>
     ),
   },
@@ -86,20 +87,19 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
     e.preventDefault();
     
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch('https://formspree.io/f/info@nexverseconsulting.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          to: 'info@nexverseconsulting.com',
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        // Show success message
-        alert('Thank you for your message. We will get back to you soon!');
+        toast.success('✔️ Your message has been sent successfully!', {
+          duration: 4000,
+          position: 'bottom-center',
+        });
         setFormData({ name: '', email: '', subject: '', message: '' });
         onClose();
       } else {
@@ -107,7 +107,10 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      alert('Sorry, there was an error sending your message. Please try again later.');
+      toast.error('Sorry, there was an error sending your message. Please try again later.', {
+        duration: 4000,
+        position: 'bottom-center',
+      });
     }
   };
 
@@ -197,7 +200,8 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
               <p className="text-[#b0b8c9] mb-4 text-xs">Ready to transform your business? Let's start the conversation.</p>
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2 md:col-span-1">
-                  <form onSubmit={handleSubmit} className="space-y-3">
+                  <form onSubmit={handleSubmit} action="https://formspree.io/f/info@nexverseconsulting.com" method="POST" className="space-y-3">
+                    <input type="hidden" name="_subject" value="New Submission from Nexverse Website" />
                     <div>
                       <label htmlFor="name" className="block text-xs font-medium text-[#b0b8c9] mb-0.5">Name</label>
                       <input
@@ -270,7 +274,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, anchorRect
                           <div className="mt-0.5">{info.icon}</div>
                           <div>
                             <h4 className="text-white font-medium text-xs mb-0.5">{info.label}</h4>
-                            <p className="text-[#b0b8c9] text-xs whitespace-nowrap">{info.value}</p>
+                            <p className={`text-[#b0b8c9] text-xs ${info.label === 'Email' ? 'break-all' : 'whitespace-nowrap'}`}>{info.value}</p>
                           </div>
                         </div>
                       ))}
