@@ -26,14 +26,15 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://formspree.io/f/info@nexverseconsulting.com', {
+      const form = e.target as HTMLFormElement;
+      const formDataObj = new FormData(form);
+      const response = await fetch('https://formspree.io/f/mrbkqdvb', {
         method: 'POST',
+        body: formDataObj,
         headers: {
-          'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
-        body: JSON.stringify(formData),
       });
-
       if (response.ok) {
         toast.success('✔️ Your message has been sent successfully!', {
           duration: 4000,
@@ -51,7 +52,6 @@ const Contact = () => {
         throw new Error('Failed to send message');
       }
     } catch (error) {
-      console.error('Error sending message:', error);
       toast.error('Sorry, there was an error sending your message. Please try again later.', {
         duration: 4000,
         position: 'bottom-center',
@@ -225,7 +225,7 @@ const Contact = () => {
           {/* Contact Form */}
           <form
             onSubmit={handleSubmit}
-            action="https://formspree.io/f/info@nexverseconsulting.com"
+            action="https://formspree.io/f/mrbkqdvb"
             method="POST"
             className="w-full max-w-xl bg-[#0e254a] rounded-2xl p-8 flex flex-col gap-4 shadow-xl"
           >
